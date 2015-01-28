@@ -20,7 +20,7 @@ public class ListenerChildNode extends ListenerParentNode  {
 	}
 	@Override
 	public void handleStateChanged(KeeperState state) throws Exception {
-
+		System.out.println("I'm changed state:"+state.toString());
 	}
 
 	@Override
@@ -34,10 +34,9 @@ public class ListenerChildNode extends ListenerParentNode  {
 	 */
 	@Override
 	public void handleDataDeleted(String dataPath) throws Exception {
+		
+		LOG.info("child node be deleted!");
 		createZNode();
-		//
-		LOG.info("now do something");
-
 	}
 	@Override
 	public void startWatcher() {

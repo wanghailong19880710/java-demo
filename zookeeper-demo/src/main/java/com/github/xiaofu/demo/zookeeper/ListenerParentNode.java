@@ -46,7 +46,7 @@ public class ListenerParentNode implements IZkStateListener, IZkDataListener,
 	}
 
 	protected void createZNode() {
-		// 创建一个临时节点，创建成功设置一个状态
+		 
 		String resultSatus = ZkUtils.createZNodeIfNotExists(zkClient,
 				ZKConstant.PARENT_PATH, 0, CreateMode.PERSISTENT);
 		if (resultSatus != null) {
@@ -86,7 +86,7 @@ public class ListenerParentNode implements IZkStateListener, IZkDataListener,
 	 */
 	@Override
 	public void handleStateChanged(KeeperState state) throws Exception {
-
+		System.out.println("I'm changed state:"+state.toString());
 	}
 
 	@Override
@@ -100,10 +100,10 @@ public class ListenerParentNode implements IZkStateListener, IZkDataListener,
 	 */
 	@Override
 	public void handleDataDeleted(String dataPath) throws Exception {
+		
+		LOG.info("parent node be deleted!");
 		createZNode();
-		//
-		LOG.info("now do something");
-
+		
 	}
 
 	@Override

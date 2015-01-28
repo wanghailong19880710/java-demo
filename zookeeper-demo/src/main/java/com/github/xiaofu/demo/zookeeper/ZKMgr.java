@@ -1,4 +1,3 @@
- 
 package com.github.xiaofu.demo.zookeeper;
 
 import java.util.Arrays;
@@ -6,10 +5,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.I0Itec.zkclient.ZkClient;
-
- 
-
- 
 
 /**
  * <p>
@@ -21,41 +16,33 @@ import org.I0Itec.zkclient.ZkClient;
  * @modify by user: {修改人} 2014-7-11
  * @modify by reason:{方法名}:{原因}
  */
-public class ZKMgr
-{
+public class ZKMgr {
 	private static Lock zkLock = new ReentrantLock();
 	private static ZkClient instance = null;
 
-	public static ZkClient getNewInstance()
-	{
-		String zkServerHost="localhost:2181";
-		int sessionTimeout=1000*10;
-		int  connTimeout=1000*10;
-		return new ZkClient(zkServerHost, sessionTimeout,
-				connTimeout);
+	public static ZkClient getNewInstance() {
+		String zkServerHost = "localhost:2181";
+		int sessionTimeout = 1000 * 5;
+		int connTimeout = 1000 * 5;
+		return new ZkClient(zkServerHost, sessionTimeout, connTimeout);
 	}
-	public static ZkClient getInstance()
-	{
-		if (instance != null)
-		{
+
+	public static ZkClient getInstance() {
+		if (instance != null) {
 			return instance;
 		}
 		zkLock.lock();
-		try
-		{
-			if (instance == null)
-			{
+		try {
+			if (instance == null) {
 
-				String zkServerHost="localhost:2181";
-				int sessionTimeout=1000*10;
-				int  connTimeout=1000*10;
+				String zkServerHost = "localhost:2181";
+				int sessionTimeout = 1000 * 5;
+				int connTimeout = 1000 * 5;
 				instance = new ZkClient(zkServerHost, sessionTimeout,
 						connTimeout);
 
 			}
-		}
-		finally
-		{
+		} finally {
 			zkLock.unlock();
 		}
 		return instance;

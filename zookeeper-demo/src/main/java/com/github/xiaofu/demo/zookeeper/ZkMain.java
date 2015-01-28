@@ -32,12 +32,19 @@ public class ZkMain {
 	 */
 	public static void main(String[] args) throws InterruptedException {
 
-		// createChildNode();
+		normalNodeOperation();
+//		 createChildNode();
 		// deleteChildNode();
 		// setChildNodeData();
 //		barrierTest();
-		producerAndConsumerQueueTest();
+//		producerAndConsumerQueueTest();
  
+	}
+
+	private static void normalNodeOperation() throws InterruptedException {
+		NormalNodeListener listerner = new NormalNodeListener();
+		listerner.startWatcher();
+		Thread.currentThread().join();
 	}
 
 	/**
@@ -82,14 +89,15 @@ public class ZkMain {
 
 	private static void barrierTest() {
 		ExecutorService service = Executors.newCachedThreadPool();
-		for (int i = 0; i <5; i++) {
+		for (int i = 0; i < 5; i++) {
 			service.execute(new Runnable() {
 				@Override
 				public void run() {
-					ZkDoubleBarrier b1 = new ZkDoubleBarrier("localhost:2181", "/b1", 5);
+					ZkDoubleBarrier b1 = new ZkDoubleBarrier("localhost:2181",
+							"/b1", 5);
 					try {
 						b1.enter();
-						Thread.currentThread().sleep(1000*2);
+						Thread.currentThread().sleep(1000 * 2);
 						b1.leave();
 					} catch (KeeperException e1) {
 						// TODO Auto-generated catch block
@@ -98,26 +106,26 @@ public class ZkMain {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					 
+
 				}
 			});
 		}
-		
-	service.shutdown();
+
+		service.shutdown();
 
 	}
-	private static void producerAndConsumerQueueTest()
-	{
-		final Random ran=new Random(10);
+
+	private static void producerAndConsumerQueueTest() {
+		final Random ran = new Random(10);
 		ExecutorService service = Executors.newCachedThreadPool();
-		for (int i = 0; i <2; i++) {
+		for (int i = 0; i < 2; i++) {
 			service.execute(new Runnable() {
 				@Override
 				public void run() {
 					ZkQueue b1 = new ZkQueue("localhost:2181", "/queue");
 					try {
-						int radValue=ran.nextInt(10);
-						System.out.println("produce value:"+radValue);
+						int radValue = ran.nextInt(10);
+						System.out.println("produce value:" + radValue);
 						b1.produce(5);
 					} catch (KeeperException e1) {
 						// TODO Auto-generated catch block
@@ -126,19 +134,19 @@ public class ZkMain {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					 
+
 				}
 			});
 		}
 		ExecutorService service2 = Executors.newCachedThreadPool();
-		for (int i = 0; i <5; i++) {
+		for (int i = 0; i < 5; i++) {
 			service2.execute(new Runnable() {
 				@Override
 				public void run() {
 					ZkQueue b1 = new ZkQueue("localhost:2181", "/queue");
 					try {
-						
-						System.out.println("consume value:"+b1.consume());
+
+						System.out.println("consume value:" + b1.consume());
 					} catch (KeeperException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -146,12 +154,12 @@ public class ZkMain {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					 
+
 				}
 			});
 		}
-	service.shutdown();
-	service2.shutdown();
+		service.shutdown();
+		service2.shutdown();
 	}
 
 }
