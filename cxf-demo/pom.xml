@@ -30,11 +30,57 @@
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-transports-http</artifactId>
-			</dependency>
+		</dependency>
 		<dependency>
 			<groupId>com.github.xiaofu.demo</groupId>
 			<artifactId>common-demo</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<outputDirectory>${project.build.directory}/debug/</outputDirectory>
+					<archive>
+
+						<manifest>
+							<!-- <addClasspath>true</addClasspath> <classpathPrefix>lib/</classpathPrefix> -->
+							<mainClass>com.github.xiaofu.demo.cxf.CxfServerEmbedJetty</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/debug/lib/</outputDirectory>
+							<excludeTransitive>false</excludeTransitive>
+							<excludeScope>provided</excludeScope>
+							<includeScope>runtime</includeScope>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install</id>
+						<phase>install</phase>
+						<goals>
+							<goal>sources</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
 </project>
