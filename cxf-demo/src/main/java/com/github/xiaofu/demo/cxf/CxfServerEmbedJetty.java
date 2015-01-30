@@ -23,7 +23,7 @@ import com.github.xiaofu.demo.utils.Tools;
 public class CxfServerEmbedJetty {
 	private static Connector createConnector() {
 		SelectChannelConnector connector = new SelectChannelConnector();
-		connector.setHost(Tools.getHostName());
+		connector.setHost("localhost");
 		connector.setPort(8080);
 		connector.setAcceptors(2);
 		connector.setMaxIdleTime(30000);
