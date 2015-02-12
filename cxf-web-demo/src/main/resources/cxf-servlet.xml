@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:beans xmlns:p="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
+	<p:import resource="classpath:META-INF/cxf/cxf.xml" />
+	<p:import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	<p:bean id="personService" class="com.github.xiaofu.demo.cxf.web.PersonServiceImpl" />
+	<jaxrs:server id="RestService" address="/personservice">
+		<jaxrs:serviceBeans>
+			<ref bean="personService" />
+		</jaxrs:serviceBeans>
+		<jaxrs:inInterceptors>
+			<p:bean class="org.apache.cxf.interceptor.LoggingInInterceptor"></p:bean>
+		</jaxrs:inInterceptors>
+		<jaxrs:outInterceptors>
+			<p:bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"></p:bean>
+		</jaxrs:outInterceptors>
+	</jaxrs:server>
+</p:beans>

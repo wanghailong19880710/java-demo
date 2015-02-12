@@ -1,14 +1,14 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.xiaofu.demo</groupId>
 	<artifactId>java-demo-parent</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<properties>
-		<java.version>1.7</java.version>
+		<java.version>1.6</java.version>
 		<cxf.version>2.7.14</cxf.version>
-		<spring.version>3.0.0.RELEASE</spring.version>
+		<spring.version>4.0.6.RELEASE</spring.version>
 		<jetty.version>8.1.15.v20140411</jetty.version>
 		<hadoop.version>2.3.0-cdh5.0.0</hadoop.version>
 		<parquet.version>1.2.5-cdh5.0.0</parquet.version>
@@ -30,7 +30,8 @@
 		<module>parquet-demo</module>
 		<module>gson-demo</module>
 		<module>jmock-demo</module>
-	</modules>
+    	<module>cxf-web-demo</module>
+  </modules>
 
 	<repositories>
 		<repository>
@@ -244,7 +245,7 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-context</artifactId>
-				<version>4.0.6.RELEASE</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<!-- jetty -->
 			<dependency>
@@ -340,7 +341,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore />
+										<ignore/>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
