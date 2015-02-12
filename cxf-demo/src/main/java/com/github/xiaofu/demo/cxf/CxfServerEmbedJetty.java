@@ -14,11 +14,10 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 
-import com.github.xiaofu.demo.utils.Tools;
-
 /**
  * @author xiaofu
- * 
+ * 打包运行命令
+ * java -cp 'cxf-demo.jar;lib\*' com.github.xiaofu.demo.cxf.CxfServerEmbedJetty
  */
 public class CxfServerEmbedJetty {
 	private static Connector createConnector() {

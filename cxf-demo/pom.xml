@@ -8,7 +8,20 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>cxf-demo</artifactId>
+	<packaging>jar</packaging>
 	<dependencies>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
 		<!-- jetty -->
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
@@ -32,21 +45,25 @@
 			<artifactId>cxf-rt-transports-http</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.github.xiaofu.demo</groupId>
-			<artifactId>common-demo</artifactId>
-			<version>${project.version}</version>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-transports-http-jetty</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-frontend-jaxrs</artifactId>
+		</dependency>
+
 	</dependencies>
 	<build>
+		<finalName>cxf-demo</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.4</version>
 				<configuration>
-					<outputDirectory>${project.build.directory}/debug/</outputDirectory>
+					<outputDirectory>${project.build.directory}/debug/ws</outputDirectory>
 					<archive>
-
 						<manifest>
 							<!-- <addClasspath>true</addClasspath> <classpathPrefix>lib/</classpathPrefix> -->
 							<mainClass>com.github.xiaofu.demo.cxf.CxfServerEmbedJetty</mainClass>
@@ -65,10 +82,12 @@
 							<goal>copy-dependencies</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.build.directory}/debug/lib/</outputDirectory>
+							<outputDirectory>${project.build.directory}/debug/ws/lib/</outputDirectory>
 							<excludeTransitive>false</excludeTransitive>
 							<excludeScope>provided</excludeScope>
 							<includeScope>runtime</includeScope>
+							<excludeGroupIds>org.springframework</excludeGroupIds>
+							<excludeArtifactIds>cxf-rt-frontend-jaxrs,cxf-rt-transports-http-jetty</excludeArtifactIds>
 						</configuration>
 					</execution>
 					<execution>
@@ -80,7 +99,53 @@
 					</execution>
 				</executions>
 			</plugin>
-
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>rs-jar</id>
+			<build>
+
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-jar-plugin</artifactId>
+						<version>2.4</version>
+						<configuration>
+							<outputDirectory>${project.build.directory}/debug/rs</outputDirectory>
+							<archive>
+								<manifest>
+									<addClasspath>true</addClasspath>
+									<classpathPrefix>lib/</classpathPrefix>
+									<mainClass>com.github.xiaofu.demo.cxf.rs.programmatically.WithoutSpringService</mainClass>
+								</manifest>
+							</archive>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>copy</id>
+								<phase>package</phase>
+								<goals>
+									<goal>copy-dependencies</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${project.build.directory}/debug/rs/lib</outputDirectory>
+									<excludeTransitive>false</excludeTransitive>
+									<excludeScope>provided</excludeScope>
+									<includeScope>runtime</includeScope>
+									<excludeGroupIds>org.springframework</excludeGroupIds>
+									<excludeArtifactIds>cxf-rt-bindings-soap,cxf-rt-frontend-jaxws</excludeArtifactIds>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+	</profiles>
 </project>

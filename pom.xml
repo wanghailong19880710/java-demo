@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.xiaofu.demo</groupId>
 	<artifactId>java-demo-parent</artifactId>
@@ -7,7 +8,7 @@
 	<packaging>pom</packaging>
 	<properties>
 		<java.version>1.6</java.version>
-		<cxf.version>2.7.14</cxf.version>
+		<cxf.version>3.0.3</cxf.version>
 		<spring.version>4.0.6.RELEASE</spring.version>
 		<jetty.version>8.1.15.v20140411</jetty.version>
 		<hadoop.version>2.3.0-cdh5.0.0</hadoop.version>
@@ -30,8 +31,8 @@
 		<module>parquet-demo</module>
 		<module>gson-demo</module>
 		<module>jmock-demo</module>
-    	<module>cxf-web-demo</module>
-  </modules>
+		<module>cxf-web-demo</module>
+	</modules>
 
 	<repositories>
 		<repository>
@@ -69,7 +70,8 @@
 			<url>http://localhost:8081/nexus/content/repositories/thirdparty/</url>
 		</repository>
 	</repositories>
-	<dependencyManagement><dependencies>
+	<dependencyManagement>
+		<dependencies>
 			<!-- test -->
 			<dependency>
 				<groupId>org.jmock</groupId>
@@ -274,7 +276,16 @@
 				<artifactId>cxf-rt-transports-http</artifactId>
 				<version>${cxf.version}</version>
 			</dependency>
-
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-transports-http-jetty</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-frontend-jaxrs</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
 			<!-- linq for java -->
 			<dependency>
 				<groupId>net.hydromatic</groupId>
@@ -341,7 +352,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore/>
+										<ignore />
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
