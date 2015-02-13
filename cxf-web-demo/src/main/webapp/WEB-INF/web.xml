@@ -3,20 +3,25 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-	<context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:cxf-servlet.xml</param-value>
-	</context-param>
-	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
-	<display-name>Archetype Created Web Application</display-name>
+	<!-- <context-param> <param-name>contextConfigLocation</param-name> <param-value>classpath:cxf-servlet.xml</param-value> 
+		</context-param> <listener> <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class> 
+		</listener> <display-name>Archetype Created Web Application</display-name> -->
 	<servlet>
 		<servlet-name>cxf</servlet-name>
-		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+		<servlet-class>org.apache.cxf.jaxrs.servlet.CXFNonSpringJaxrsServlet</servlet-class>
+		<init-param>
+			<param-name>jaxrs.serviceClasses</param-name>
+			<param-value>
+				com.github.xiaofu.demo.cxf.web.PersonServiceImpl
+			</param-value>
+		</init-param>
+		<init-param>
+			<param-name>jaxrs.address</param-name>
+			<param-value>/personservice</param-value>
+		</init-param>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>cxf</servlet-name>
-		<url-pattern>/rs/*</url-pattern>
+		<url-pattern>/api/*</url-pattern>
 	</servlet-mapping>
 </web-app>

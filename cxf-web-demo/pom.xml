@@ -39,7 +39,7 @@
 			<artifactId>cxf-rt-transports-http-jetty</artifactId>
 		</dependency>
 		<!-- spring -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 		</dependency>
@@ -47,7 +47,7 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
 			<version>${spring.version}</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>com.github.xiaofu.demo</groupId>
 			<artifactId>common-demo</artifactId>
