@@ -8,7 +8,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
  
-
+@Path("/personservice/")
 @Produces({"application/xml","application/json"}) 
 public interface PersonService extends Serializable {
     @GET

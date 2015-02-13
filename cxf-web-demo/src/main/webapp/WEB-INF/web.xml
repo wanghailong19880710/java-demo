@@ -15,10 +15,6 @@
 				com.github.xiaofu.demo.cxf.web.PersonServiceImpl
 			</param-value>
 		</init-param>
-		<init-param>
-			<param-name>jaxrs.address</param-name>
-			<param-value>/personservice</param-value>
-		</init-param>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>cxf</servlet-name>

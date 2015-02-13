@@ -1,9 +1,9 @@
 package com.github.xiaofu.demo.cxf.programmatically;
 
-import org.apache.cxf.binding.BindingFactoryManager;
-import org.apache.cxf.jaxrs.JAXRSBindingFactory;
 import org.apache.cxf.jaxrs.JAXRSServerFactoryBean;
 import org.apache.cxf.jaxrs.lifecycle.SingletonResourceProvider;
+
+import com.github.xiaofu.demo.cxf.web.PersonServiceImpl;
  
 /**
  * 需要引入cxf-rt-transports-http-jetty
