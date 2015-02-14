@@ -57,17 +57,17 @@
 		<repository>
 			<id>releases</id>
 			<name>releases</name>
-			<url>http://localhost:8081/nexus/content/repositories/releases/</url>
+			<url>http://192.168.30.55:8081/nexus/content/repositories/releases/</url>
 		</repository>
 		<repository>
 			<id>snapshots</id>
 			<name>Snapshots</name>
-			<url>http://localhost:8081/nexus/content/repositories/snapshots/</url>
+			<url>http://192.168.30.55:8081/nexus/content/repositories/snapshots/</url>
 		</repository>
 		<repository>
 			<id>3rdparty</id>
 			<name>3rdparty</name>
-			<url>http://localhost:8081/nexus/content/repositories/thirdparty/</url>
+			<url>http://192.168.30.55:8081/nexus/content/repositories/thirdparty/</url>
 		</repository>
 	</repositories>
 	<dependencyManagement>
@@ -286,12 +286,6 @@
 				<artifactId>cxf-rt-frontend-jaxrs</artifactId>
 				<version>${cxf.version}</version>
 			</dependency>
-			<dependency>
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-rt-rs-extension-providers</artifactId>
-				<version>${cxf.version}</version>
-			</dependency>
-
 			<!-- linq for java -->
 			<dependency>
 				<groupId>net.hydromatic</groupId>
