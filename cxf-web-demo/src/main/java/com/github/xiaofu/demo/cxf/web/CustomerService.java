@@ -31,7 +31,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 @Path("/customerservice/")
-@Produces({"application/xml","application/json"}) 
+@Produces({"text/xml","application/xml","application/json"}) 
 public class CustomerService {
     long currentId = 123;
     Map<Long, Customer> customers = new HashMap<Long, Customer>();

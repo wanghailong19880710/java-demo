@@ -22,13 +22,15 @@
 			<param-name>jaxrs.serviceClasses</param-name>
 			<param-value>
 				com.github.xiaofu.demo.cxf.web.PersonServiceImpl,
-				com.github.xiaofu.demo.cxf.web.CustomerService
+				com.github.xiaofu.demo.cxf.web.CustomerService,
+				com.github.xiaofu.demo.cxf.web.BooksService
 			</param-value>
 		</init-param>
 		<init-param>
 			<param-name>jaxrs.providers</param-name>
 			<param-value>
-				org.codehaus.jackson.jaxrs.JacksonJsonProvider
+				org.codehaus.jackson.jaxrs.JacksonJsonProvider,
+				org.apache.cxf.jaxrs.ext.search.SearchContextProvider
 			</param-value>
 		</init-param>
 		<init-param>
@@ -42,6 +44,14 @@
 			<param-name>jaxrs.outInterceptors</param-name>
 			<param-value>
 				org.apache.cxf.interceptor.LoggingOutInterceptor
+			</param-value>
+		</init-param>
+		<!-- registers contextual properties -->
+		<init-param>
+			<param-name>jaxrs.properties</param-name>
+			<param-value>
+				fiql.support.single.equals.operator=true
+				search.use.all.query.component=true
 			</param-value>
 		</init-param>
 	</servlet>

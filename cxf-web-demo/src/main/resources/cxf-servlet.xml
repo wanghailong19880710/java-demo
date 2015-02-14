@@ -1,24 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<p:beans xmlns:p="http://www.springframework.org/schema/beans"
+<beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
-	<p:import resource="classpath:META-INF/cxf/cxf.xml" />
-	<p:import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
-	<p:bean id="personService" class="com.github.xiaofu.demo.cxf.web.PersonServiceImpl" />
-	<p:bean id="customeService" class="com.github.xiaofu.demo.cxf.web.CustomerService" />
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	<bean id="personService" class="com.github.xiaofu.demo.cxf.web.PersonServiceImpl" />
+	<bean id="customeService" class="com.github.xiaofu.demo.cxf.web.CustomerService" />
+	<bean id="booksService" class="com.github.xiaofu.demo.cxf.web.BooksService" />
 	<jaxrs:server id="RestService" address="/">
+		<jaxrs:properties>
+			<entry>
+				<key>
+					<props>
+						 <prop key="search.use.all.query.component"></prop>
+					</props>
+				</key>
+				<value>true</value>
+			</entry>
+		</jaxrs:properties>
 		<jaxrs:providers>
 			<bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
+			<bean class="org.apache.cxf.jaxrs.ext.search.SearchContextProvider" />
 		</jaxrs:providers>
 		<jaxrs:serviceBeans>
 			<ref bean="personService" />
 			<ref bean="customeService" />
+			<ref bean="booksService" />
 		</jaxrs:serviceBeans>
 		<jaxrs:inInterceptors>
-			<p:bean class="org.apache.cxf.interceptor.LoggingInInterceptor"></p:bean>
+			<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"></bean>
 		</jaxrs:inInterceptors>
 		<jaxrs:outInterceptors>
-			<p:bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"></p:bean>
+			<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"></bean>
 		</jaxrs:outInterceptors>
 	</jaxrs:server>
-</p:beans>
+</beans>
