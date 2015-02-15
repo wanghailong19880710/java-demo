@@ -8,7 +8,7 @@
 	<bean id="customeService" class="com.github.xiaofu.demo.cxf.web.CustomerService" />
 	<bean id="booksService" class="com.github.xiaofu.demo.cxf.web.BooksService" />
 	<jaxrs:server id="RestService" address="/">
-		<jaxrs:properties>
+		<!-- <jaxrs:properties>
 			<entry>
 				<key>
 					<value>search.use.all.query.component</value>
@@ -21,7 +21,7 @@
 				</key>
 				<value>true</value>
 			</entry>
-		</jaxrs:properties>
+		</jaxrs:properties> -->
 		<jaxrs:providers>
 			<bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
 			<bean class="org.apache.cxf.jaxrs.ext.search.SearchContextProvider" />

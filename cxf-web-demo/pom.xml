@@ -11,7 +11,6 @@
 	<artifactId>cxf-web-demo</artifactId>
 	<packaging>war</packaging>
 	<name>cxf-web-demo</name>
-
 	<dependencies>
 		<dependency>
 			<groupId>log4j</groupId>

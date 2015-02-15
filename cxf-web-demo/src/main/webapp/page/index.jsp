@@ -8,7 +8,7 @@
 	<script type="text/javascript" src="../js/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript">
 		$.ajax({
-			url : "http://localhost:9000/customerservice/customers/123",
+			url : "<%=request.getContextPath()%>/nonspring/books?_s=id==1",
 			dataType : "json"
 		}).done(function(msg) {
 			alert(msg);
@@ -16,5 +16,8 @@
 			alert(textStatus);
 		});
 	</script>
+	<div>
+
+	</div>
 </body>
 </html>
