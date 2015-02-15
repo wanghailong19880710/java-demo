@@ -11,9 +11,13 @@
 		<jaxrs:properties>
 			<entry>
 				<key>
-					<props>
-						 <prop key="search.use.all.query.component"></prop>
-					</props>
+					<value>search.use.all.query.component</value>
+				</key>
+				<value>true</value>
+			</entry>
+			<entry>
+				<key>
+					<value>fiql.support.single.equals.operator</value>
 				</key>
 				<value>true</value>
 			</entry>

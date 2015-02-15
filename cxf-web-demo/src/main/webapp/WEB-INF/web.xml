@@ -46,14 +46,14 @@
 				org.apache.cxf.interceptor.LoggingOutInterceptor
 			</param-value>
 		</init-param>
-		<!-- registers contextual properties -->
-		<init-param>
+		<!-- registers contextual properties with space split -->
+		<!-- <init-param>
 			<param-name>jaxrs.properties</param-name>
 			<param-value>
-				fiql.support.single.equals.operator=true
+				fiql.support.single.equals.operator=true 
 				search.use.all.query.component=true
 			</param-value>
-		</init-param>
+		</init-param> -->
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>cxf-nonspring</servlet-name>
