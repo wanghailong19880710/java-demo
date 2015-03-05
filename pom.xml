@@ -32,6 +32,7 @@
 		<module>gson-demo</module>
 		<module>jmock-demo</module>
 		<module>cxf-web-demo</module>
+		<module>hbase-demo</module>
 	</modules>
 
 	<repositories>
