@@ -130,7 +130,9 @@ public class ClientOp {
 		try {
 			HTable table = new HTable(conf, tablename);
 			Scan s = new Scan();
+		
 			ResultScanner rs = table.getScanner(s);
+		
 			for (Result r : rs) {
 				KeyValue[] kv = r.raw();
 				for (int i = 0; i < kv.length; i++) {
