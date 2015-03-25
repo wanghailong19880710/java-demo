@@ -81,9 +81,9 @@ public class ClientOp {
 			Put put = new Put(Bytes.toBytes(rowKey));
 			put.add(Bytes.toBytes("cf"), Bytes.toBytes(qualifier),
 					Bytes.toBytes(value));
-
+			
 			table.put(put);
-
+			 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -28,6 +28,14 @@ public class ClientOpTest {
 	public void setUp() throws Exception {
 	}
 
+	@Test
+	public void writeRow() throws IOException {
+		ClientOp.writeRow(ClientOp.TABLE, "row1", "a", "value1");
+		ClientOp.writeRow(ClientOp.TABLE, "row1", "b", "value1");
+		ClientOp.selectRow(TABLE, "row1");
+		ClientOp.deleteRow(TABLE, "row1");
+	}
+
 	// @Test
 	public void deleteRow() throws IOException {
 		ClientOp.writeRow(ClientOp.TABLE, "row1", "a", "value1");
@@ -74,8 +82,8 @@ public class ClientOpTest {
 		ClientOp.selectRow(TABLE, "row1");
 		HTable table = new HTable(conf, TABLE);
 		Increment increment = new Increment("row1".getBytes());
-		 increment.addColumn("cf".getBytes(), "a".getBytes(), 100);
-		 
+		increment.addColumn("cf".getBytes(), "a".getBytes(), 100);
+
 		System.out.println("====================");
 		System.out.println(increment.toString());
 		ClientOp.selectRow(TABLE, "row1");
