@@ -18,11 +18,16 @@ public class ListenerChildNode extends ListenerParentNode  {
 					LOG.info("I'm child follower");
 				}
 	}
+	/**
+	 * 
+	 */
 	@Override
 	public void handleStateChanged(KeeperState state) throws Exception {
 		System.out.println("I'm changed state:"+state.toString());
 	}
-
+	/**
+	 * 在数据改变或节点被创建都会触发此事件
+	 */
 	@Override
 	public void handleDataChange(String dataPath, Object data) throws Exception {
 		System.out.println("dataPath:" + dataPath);
@@ -30,7 +35,7 @@ public class ListenerChildNode extends ListenerParentNode  {
 	}
 
 	/**
-	 * 判断是否有其它程序退出了
+	 * 节点删除时会触发此事件 
 	 */
 	@Override
 	public void handleDataDeleted(String dataPath) throws Exception {

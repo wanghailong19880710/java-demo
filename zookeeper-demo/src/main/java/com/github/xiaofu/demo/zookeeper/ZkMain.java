@@ -32,8 +32,8 @@ public class ZkMain {
 	 */
 	public static void main(String[] args) throws InterruptedException {
 
-		normalNodeOperation();
-//		 createChildNode();
+//		normalNodeOperation();
+		 createChildNode();
 		// deleteChildNode();
 		// setChildNodeData();
 //		barrierTest();

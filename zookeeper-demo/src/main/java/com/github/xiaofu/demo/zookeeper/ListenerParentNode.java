@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * <p>
+ * getChildren方法中的观察
  * </p>
  * 
  * @author fulaihua 2014-7-11 下午2:55:38
@@ -81,23 +82,21 @@ public class ListenerParentNode implements IZkStateListener, IZkDataListener,
 		startWatcher();
 	}
 
-	/**
-	 * 发生状态改变，follower重新竞争持有锁
-	 */
+	 
 	@Override
 	public void handleStateChanged(KeeperState state) throws Exception {
 		System.out.println("I'm changed state:"+state.toString());
 	}
-
+	/**
+	 * 当子节点被创建或删除时，在父节点对节点的观察会被触发
+	 */
 	@Override
 	public void handleDataChange(String dataPath, Object data) throws Exception {
 		System.out.println("dataPath:" + dataPath);
 		System.out.println("data:" + data);
 	}
 
-	/**
-	 * 判断是否有其它程序退出了
-	 */
+	 
 	@Override
 	public void handleDataDeleted(String dataPath) throws Exception {
 		
