@@ -33,6 +33,7 @@
 		<module>jmock-demo</module>
 		<module>cxf-web-demo</module>
 		<module>hbase-demo</module>
+		<module>thrift-demo</module>
 	</modules>
 
 	<repositories>
