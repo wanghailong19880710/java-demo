@@ -88,8 +88,8 @@ public class Test {
 		for (JsonNode node : rootNode)
 		{
 				ObjectNode objNode=(ObjectNode)node;
-				System.out.println(objNode.get("key"));
-				System.out.println(objNode.get("value"));
+				System.out.println(objNode.get("key").getTextValue());
+				System.out.println(objNode.get("value").getTextValue());
 				
 		}
 	}
