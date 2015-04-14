@@ -16,6 +16,15 @@
 		<lucene.version>4.4.0-cdh5.0.0</lucene.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<!--core.xml -->
+		<ha.zookeeper.quorum>node203.vipcloud:2181,node204.vipcloud:2181,node205.vipcloud:2181</ha.zookeeper.quorum>
+		<!--hdfs.xml -->
+		<dfs.replication>2</dfs.replication>
+		<nn1>vnamenode</nn1>
+		<nn2>vdatanode1</nn2>
+		<dfs.namenode.shared.edits.dir>qjournal://vnamenode:8485;vdatanode1:8485;vdatanode2:8485/vipcluster</dfs.namenode.shared.edits.dir>
+		<!-- no use -->
+		<dfs.ha.fencing.ssh.private-key-files>/home/vipcloud/.ssh/id_rsa</dfs.ha.fencing.ssh.private-key-files>
 	</properties>
 	<modules>
 		<module>linq-demo</module>
@@ -335,6 +344,12 @@
 		</dependencies>
 	</dependencyManagement>
 	<build>
+		<resources>
+			<resource>
+				<directory>${project.basedir}/src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 		<pluginManagement>
 			<plugins>
 				<plugin>
