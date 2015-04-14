@@ -7,7 +7,64 @@
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
+	<properties>
+		<!--core.xml -->
+		<ha.zookeeper.quorum>node203.vipcloud:2181,node204.vipcloud:2181,node205.vipcloud:2181</ha.zookeeper.quorum>
+		<!--hdfs.xml -->
+		<dfs.replication>2</dfs.replication>
+		<nn1>vnamenode</nn1>
+		<nn2>vdatanode1</nn2>
+		<dfs.namenode.shared.edits.dir>qjournal://vnamenode:8485;vdatanode1:8485;vdatanode2:8485/vipcluster</dfs.namenode.shared.edits.dir>
+	</properties>
 	<artifactId>hadoop-demo</artifactId>
+	<build>
+		<resources>
+			<resource>
+				<directory>${project.basedir}/src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<!-- NOTE: We don't need a groupId specification because the group is 
+					org.apache.maven.plugins ...which is assumed by default. -->
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>com.github.xiaofu.demo.hadoop.LzoCompressor</mainClass>
+						</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id> <!-- this is used for inheritance merges -->
+						<phase>package</phase> <!-- bind to the packaging phase -->
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<!-- <outputDirectory>${project.build.directory}/release/journal-server</outputDirectory> -->
+					<archive>
+						<manifest>
+							<mainClass>com.github.xiaofu.demo.hadoop.LzoCompressor</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 	<dependencies>
 		<!-- hadoop client hdfs and yarn -->
 		<!-- hadoop begin -->
@@ -136,6 +193,11 @@
 					<artifactId>jasper-runtime</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.hadoop.gplcompression</groupId>
+			<artifactId>hadoop-lzo</artifactId>
+			<version>0.4.15</version>
 		</dependency>
 	</dependencies>
 </project>
