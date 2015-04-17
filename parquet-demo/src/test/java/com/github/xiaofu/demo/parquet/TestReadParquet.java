@@ -38,7 +38,7 @@ public class TestReadParquet
 		File ouputFile = new File(
 				"search_click_infos.csv");
 		Path inputFile = new Path(
-				"/user/hive/warehouse/search_click_infos/year=2015/month=1/day=1/d449a97a5029d53b-b51236f9c6a1e1ab_1408550508_data.0");
+				"/user/hive/warehouse/view_down_infos/year=2015/month=4/day=13/catalog=1/virtual=0/4e4adb1915f31fad-45b1fdfc89b18c86_754349215_data.0");
 		ConvertUtils.convertParquetToCSV(inputFile, ouputFile);
 	}
 	 

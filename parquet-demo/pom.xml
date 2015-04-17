@@ -19,16 +19,37 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!--parquet, can only use this one -->
+
 		<dependency>
 			<groupId>com.twitter</groupId>
-			<artifactId>parquet-hadoop-bundle</artifactId>
+			<artifactId>parquet-encoding</artifactId>
+			<version>${parquet.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.twitter</groupId>
+			<artifactId>parquet-common</artifactId>
+			<version>${parquet.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.twitter</groupId>
+			<artifactId>parquet-column</artifactId>
+			<version>${parquet.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.twitter</groupId>
+			<artifactId>parquet-hadoop</artifactId>
+			<version>${parquet.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.hadoop</groupId>
+					<artifactId>hadoop-client</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<!-- hadoop begin -->
 		<dependency>
 			<groupId>org.apache.hadoop</groupId>
 			<artifactId>hadoop-common</artifactId>
-			<version>${hadoop.version}</version>
 			<scope>compile</scope>
 			<exclusions>
 				<exclusion>
@@ -116,7 +137,6 @@
 		<dependency>
 			<groupId>org.apache.hadoop</groupId>
 			<artifactId>hadoop-hdfs</artifactId>
-			<version>${hadoop.version}</version>
 			<scope>compile</scope>
 			<exclusions>
 				<exclusion>
