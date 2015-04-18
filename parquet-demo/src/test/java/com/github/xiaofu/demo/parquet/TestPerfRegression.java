@@ -22,8 +22,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.github.xiaofu.demo.parquet.ConvertUtils;
-
 import parquet.Log;
 
 public class TestPerfRegression {

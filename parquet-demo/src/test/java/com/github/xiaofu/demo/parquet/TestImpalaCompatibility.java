@@ -20,8 +20,6 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import com.github.xiaofu.demo.parquet.ConvertUtils;
-
 import parquet.Log;
 
 public class TestImpalaCompatibility {

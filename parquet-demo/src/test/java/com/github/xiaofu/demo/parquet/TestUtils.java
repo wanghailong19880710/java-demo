@@ -4,8 +4,6 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import com.github.xiaofu.demo.parquet.Utils.Version;
-
 public class TestUtils {
   
   @Test
