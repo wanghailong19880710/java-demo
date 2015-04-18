@@ -11,7 +11,8 @@ import org.apache.hadoop.fs.Path;
 import org.junit.Before;
 import org.junit.Test;
 
-import parquet.compat.test.ConvertUtils;
+import com.github.xiaofu.demo.parquet.ConvertUtils;
+
 import parquet.example.data.simple.NanoTime;
 
 public class TestReadParquet

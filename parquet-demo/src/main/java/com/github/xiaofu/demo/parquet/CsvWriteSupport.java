@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package parquet.compat.test;
+package com.github.xiaofu.demo.parquet;
 
 import java.util.HashMap;
 import java.util.List;

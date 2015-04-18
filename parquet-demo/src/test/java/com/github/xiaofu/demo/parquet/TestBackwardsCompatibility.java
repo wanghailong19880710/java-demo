@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package parquet.compat.test;
+package com.github.xiaofu.demo.parquet;
 
 import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
+
+import com.github.xiaofu.demo.parquet.ConvertUtils;
 
 import parquet.Log;
 

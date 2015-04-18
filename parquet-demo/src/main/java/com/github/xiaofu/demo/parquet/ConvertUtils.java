@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package parquet.compat.test;
+package com.github.xiaofu.demo.parquet;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -31,6 +31,9 @@ import java.util.regex.Pattern;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 
+
+
+import com.github.xiaofu.demo.parquet.Utils;
 
 import parquet.Log;
 import parquet.Preconditions;
