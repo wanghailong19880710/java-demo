@@ -13,7 +13,7 @@ import org.junit.Test;
  *
  */
 public class TestWriteParquet {
-	File baseDir=new File("E:\\open-source-projects\\big-datas\\parquet\\src\\parquet-compatibility-master\\parquet-testdata\\tpch");
+	File baseDir=new File("E:\\open-source-projects\\big-data\\parquet\\src\\parquet-compatibility-master\\parquet-testdata\\tpch");
 	 
 	@Test
 	public void writeParquetWithSnappyAndDict() throws IOException
