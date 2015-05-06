@@ -24,18 +24,47 @@
 			<artifactId>guava</artifactId>
 			<version>14.0</version>
 		</dependency>
-
+		<dependency>
+			<groupId>net.sf.ucanaccess</groupId>
+			<artifactId>ucanaccess</artifactId>
+			<version>2.0.9.5</version>
+		</dependency>
 
 	</dependencies>
 	<build>
 		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<appendAssemblyId>false</appendAssemblyId>
+					<archive>
+						<manifest>
+							<mainClass>com/github/xiaofu/demo/AccessDemo</mainClass>
+						</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>
+							jar-with-dependencies
+						</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>assembly</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.5</version>
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>com.github.xiaofu.demo.Test</mainClass>
+							<mainClass>com.github.xiaofu.demo.AccessDemo</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
