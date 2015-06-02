@@ -1,4 +1,4 @@
-package com.github.xiaofu.demo.hadoop;
+package com.github.xiaofu.demo.hadoop.mr;
 // cc NewMaxTemperature Application to find the maximum temperature in the weather dataset using the new context objects MapReduce API
 import java.io.IOException;
 
@@ -32,6 +32,7 @@ public class NewMaxTemperature {
       String quality = line.substring(92, 93);
       if (airTemperature != MISSING && quality.matches("[01459]")) {
         /*[*/context.write/*]*/(new Text(year), new IntWritable(airTemperature));
+     
       }
     }
   }
@@ -68,6 +69,8 @@ public class NewMaxTemperature {
 
     job.setOutputKeyClass(Text.class);
     job.setOutputValueClass(IntWritable.class);
+    job.getConfiguration().set("fs.default.name","file:///");
+    job.getConfiguration().set("mapred.job.tracker", "local");
     
     /*[*/System.exit(job.waitForCompletion(true) ? 0 : 1);/*]*/
   }
