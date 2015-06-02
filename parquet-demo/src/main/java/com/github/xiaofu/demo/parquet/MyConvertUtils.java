@@ -31,8 +31,6 @@ import java.util.regex.Pattern;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 
-
-
 import com.github.xiaofu.demo.parquet.Utils;
 
 import parquet.Log;
@@ -44,6 +42,7 @@ import parquet.example.data.simple.SimpleGroup;
 import parquet.example.data.simple.convert.GroupRecordConverter;
 import parquet.hadoop.ParquetFileReader;
 import parquet.hadoop.ParquetReader;
+import parquet.hadoop.api.ReadSupport;
 import parquet.hadoop.example.GroupReadSupport;
 import parquet.hadoop.metadata.CompressionCodecName;
 import parquet.hadoop.metadata.ParquetMetadata;
@@ -215,6 +214,46 @@ public class MyConvertUtils
 		}
 	}
 
+	public static void convertParquetToCSV_With_Specified_Columns(
+			Path parquetFilePath, File csvOutputFile) throws IOException
+	{
+		// Preconditions.checkArgument(parquetFilePath.getName().endsWith(".parquet"),
+		// "parquet file should have .parquet extension");
+		Preconditions.checkArgument(csvOutputFile.getName().endsWith(".csv"),
+				"csv file should have .csv extension");
+		// Preconditions.checkArgument(!csvOutputFile.exists(),
+		// "Output file " + csvOutputFile.getAbsolutePath() +
+		// " already exists");
+
+		LOG.info("Converting " + parquetFilePath.getName() + " to "
+				+ csvOutputFile.getName());
+		//只读一个字段，写入配置，在readSupport对象中初始化时只会去读这一个字段的值
+		Configuration configuration = new Configuration(true);
+		configuration.set(ReadSupport.PARQUET_READ_SCHEMA, "message m { optional binary user_id;}");
+		GroupReadSupport readSupport = new GroupReadSupport();
+		/*ParquetMetadata readFooter = ParquetFileReader.readFooter(
+				configuration, parquetFilePath);*/
+		//MessageType fileSchema = readFooter.getFileMetaData().getSchema();
+		MessageType requestSchema=MessageTypeParser.parseMessageType("message m { optional binary user_id;}");
+		//readSupport.init(configuration, null, fileSchema);
+		BufferedWriter w = new BufferedWriter(new FileWriter(csvOutputFile));
+		ParquetReader<Group> reader = new ParquetReader<Group>(configuration,parquetFilePath,
+				readSupport);
+		try
+		{
+			Group g = null;
+			while ((g = reader.read()) != null)
+			{
+				writeGroup(w, g, requestSchema);
+			}
+			reader.close();
+		}
+		finally
+		{
+			Utils.closeQuietly(w);
+		}
+	}
+
 	public static void convertParquetToCSV(File parquetFile, File csvOutputFile)
 			throws IOException
 	{
@@ -270,19 +309,19 @@ public class MyConvertUtils
 			if (fieldName.equalsIgnoreCase("visit_time"))
 			{
 
-				
 				Binary binary = g.getInt96(j, 0);
 				byte[] invertBytes = getInvertBytes(binary.getBytes());
-				
-				NanoTime nanoSeconds =NanoTime.fromBinary(Binary.fromByteArray(invertBytes));
+
+				NanoTime nanoSeconds = NanoTime.fromBinary(Binary
+						.fromByteArray(invertBytes));
 
 				System.out.println("====nanoTime=======");
 				System.out.println(nanoSeconds.toString());
-			    valueToString=GetDateTimeFormat(nanoSeconds);
+				valueToString = GetDateTimeFormat(nanoSeconds);
 				System.out.println("=========result time=========");
 				System.out.println(valueToString);
 				System.out.println("==================");
-				
+
 			}
 			else
 				valueToString = g.getValueToString(j, 0);
@@ -293,7 +332,7 @@ public class MyConvertUtils
 
 	private static String GetDateTimeFormat(NanoTime time)
 	{
-		
+
 		double JD = time.getJulianDay();
 		double Z = Math.floor(JD + 0.5);
 		double W = Math.floor((Z - 1867216.25) / 36524.25);
@@ -318,20 +357,20 @@ public class MyConvertUtils
 			year = CC - 4715;
 		else
 			year = CC - 4716;
-	 
-		long ms = time.getTimeOfDayNanos()/1000000;
+
+		long ms = time.getTimeOfDayNanos() / 1000000;
 		int ss = 1000;
 		int mi = ss * 60;
 		int hh = mi * 60;
-		 
-		int hour =(int) ms / hh;
-		long minutes = (ms -  hour * hh) / mi;
-		long seconds = (ms -  hour * hh - minutes * mi) / ss;
-		long milliSecond = ms -  hour * hh - minutes * mi - seconds * ss;
-		 
-		return String.format("%s-%s-%s %s:%s:%s", (int)year,(int)month,(int)day,hour,minutes,seconds);
-	 
-		
+
+		int hour = (int) ms / hh;
+		long minutes = (ms - hour * hh) / mi;
+		long seconds = (ms - hour * hh - minutes * mi) / ss;
+		long milliSecond = ms - hour * hh - minutes * mi - seconds * ss;
+
+		return String.format("%s-%s-%s %s:%s:%s", (int) year, (int) month,
+				(int) day, hour, minutes, seconds);
+
 	}
 
 	private static byte[] getInvertBytes(byte[] bytes)
