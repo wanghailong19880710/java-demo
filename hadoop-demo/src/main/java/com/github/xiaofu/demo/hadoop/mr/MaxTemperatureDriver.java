@@ -5,7 +5,9 @@ package com.github.xiaofu.demo.hadoop.mr;
 import org.apache.hadoop.conf.*;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.*;
-import org.apache.hadoop.mapred.*;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.*;
 
  
@@ -21,20 +23,20 @@ public class MaxTemperatureDriver extends Configured implements Tool {
       return -1;
     }
     
-    JobConf conf = new JobConf(getConf(), getClass());
-    conf.setJobName("Max temperature");
+    Job job=Job.getInstance(getConf());
+    job.setJobName("Max temperature");
     
-    FileInputFormat.addInputPath(conf, new Path(args[0]));
-    FileOutputFormat.setOutputPath(conf, new Path(args[1]));
+    FileInputFormat.addInputPath(job, new Path(args[0]));
+    FileOutputFormat.setOutputPath(job, new Path(args[1]));
     
-    conf.setOutputKeyClass(Text.class);
-    conf.setOutputValueClass(IntWritable.class);
+    job.setOutputKeyClass(Text.class);
+    job.setOutputValueClass(IntWritable.class);
 
-    conf.setMapperClass(MaxTemperatureMapper.class);
-    conf.setCombinerClass(MaxTemperatureReducer.class);
-    conf.setReducerClass(MaxTemperatureReducer.class);
+    job.setMapperClass(MaxTemperatureMapper.class);
+    job.setCombinerClass(MaxTemperatureReducer.class);
+    job.setReducerClass(MaxTemperatureReducer.class);
 
-    JobClient.runJob(conf);
+    /*[*/System.exit(job.waitForCompletion(true) ? 0 : 1);/*]*/
     return 0;
   }
   
