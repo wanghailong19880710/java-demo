@@ -35,11 +35,14 @@ import com.github.xiaofu.demo.parquet.Utils;
 
 import parquet.Log;
 import parquet.Preconditions;
+import parquet.column.ColumnReader;
 import parquet.column.page.PageReadStore;
 import parquet.example.data.Group;
 import parquet.example.data.simple.NanoTime;
 import parquet.example.data.simple.SimpleGroup;
 import parquet.example.data.simple.convert.GroupRecordConverter;
+import parquet.filter.ColumnPredicates.Predicate;
+import parquet.filter.ColumnRecordFilter;
 import parquet.hadoop.ParquetFileReader;
 import parquet.hadoop.ParquetReader;
 import parquet.hadoop.api.ReadSupport;
@@ -214,7 +217,7 @@ public class MyConvertUtils
 		}
 	}
 
-	public static void convertParquetToCSV_With_Specified_Columns(
+	public static void convertParquetToCSV_With_Specified_Columns_And_Column_Filter(
 			Path parquetFilePath, File csvOutputFile) throws IOException
 	{
 		// Preconditions.checkArgument(parquetFilePath.getName().endsWith(".parquet"),
@@ -238,7 +241,16 @@ public class MyConvertUtils
 		//readSupport.init(configuration, null, fileSchema);
 		BufferedWriter w = new BufferedWriter(new FileWriter(csvOutputFile));
 		ParquetReader<Group> reader = new ParquetReader<Group>(configuration,parquetFilePath,
-				readSupport);
+				readSupport,ColumnRecordFilter.column("user_id", new Predicate()
+				{
+					
+					@Override
+					public boolean apply(ColumnReader input)
+					{
+						String temp=input.getBinary().toStringUsingUTF8();
+						return !temp.equals("0") && temp!="";
+					}
+				}));
 		try
 		{
 			Group g = null;
