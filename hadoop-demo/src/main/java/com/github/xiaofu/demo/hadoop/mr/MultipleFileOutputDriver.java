@@ -45,7 +45,8 @@ public class MultipleFileOutputDriver extends Configured implements Tool {
 		public void reduce(Text key, Iterable<Text> values, Context context)
 				throws IOException, InterruptedException {
 			while (values.iterator().hasNext()) {
-				// 此方法是使用了当前reduce上下文以及输出配置，只是可以指定输出名而已，它会将临时目录的数据移动到正式目录，因为它是标准输出方式，但是这里会产生空文件，使用lazy包装!
+				// 此方法是使用了当前reduce上下文以及输出配置包装了一个上下文，只是可以指定输出名而已，而且这个文件名可以加/，它表达一个路径，前面是路径
+				// ，最后是文件名。但是这里标准输出还是会创建一个空文件，使用lazy包装输出!
 				outputs.write(NullWritable.get(), values.iterator().next(),
 						key.toString());
 				// 这个另起了一个上下文和指定名称的输出配置，此输出无法将临时目录中的数据移动到正式目录
