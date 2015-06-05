@@ -33,6 +33,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -41,6 +42,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.hadoop.io.file.tfile.Utils.Version;
 
 import parquet.Log;
+import parquet.example.data.simple.NanoTime;
 
 public class Utils {
 
@@ -382,5 +384,100 @@ public class Utils {
 			closeQuietly(out);
 		}
 		return sortedFile;
+	}
+	/**
+	 * convert date to julian dat
+	 * @author fulaihua 2015-4-17 下午1:10:48
+	 * @param year
+	 * @param month
+	 * @param day
+	 * @return
+	 */
+	public static long dateToJulianDay (int year, int month, int day)
+    {
+        long jy = year, jm = month, jd = day;
+        if (jy < 0)
+        {
+            jy = jy + 1;
+        }
+        if (month > 2)
+        {
+            jm = jm + 1;
+        }
+        else
+        {
+            jm = jm + 13;
+            jy = jy - 1;
+        }
+        long jul = (long)(Math.floor(365.25 * jy) + Math.floor (30.6001 * jm) + jd + 1720995.0);
+        if (jy < 1582 && jm < 10 && jd < 15)
+        {
+            return jul;
+        }
+        else
+        {
+            long ja = (long) (0.01 * jy);
+            jul =(long)(jul + 2 - ja + 0.25 * ja);
+            return jul;
+        }
+    }
+	/**
+	 * 儒略日到JAVA日期转换，返回一个日期
+	 * @author fulaihua 2015-4-17 下午3:04:49
+	 * @param time
+	 * @return
+	 */
+	public static Calendar julianDayToDate(NanoTime time)
+	{
+		
+		double JD = time.getJulianDay();
+		double Z = Math.floor(JD + 0.5);
+		double W = Math.floor((Z - 1867216.25) / 36524.25);
+		double X = Math.floor(W / 4);
+		double AA = Math.floor(Z + 1 + W - X);
+		double BB = Math.floor(AA + 1524);
+		double CC = Math.floor((BB - 122.1) / 365.25);
+		double DD = Math.floor(365.25 * CC);
+		double EE = Math.floor((BB - DD) / 30.6001);
+		double FF = Math.floor(30.6001 * EE);
+
+		double day = BB - DD - FF;
+		double month;
+		double year;
+
+		if ((EE - 13) <= 12 && (EE - 13) > 0)
+			month = EE - 13;
+		else
+			month = EE - 1;
+
+		if (month == 1 || month == 2)
+			year = CC - 4715;
+		else
+			year = CC - 4716;
+	 
+		long ms = time.getTimeOfDayNanos()/1000000;
+		int ss = 1000;
+		int mi = ss * 60;
+		int hh = mi * 60;
+		 
+		int hour =(int) ms / hh;
+		long minutes = (ms -  hour * hh) / mi;
+		long seconds = (ms -  hour * hh - minutes * mi) / ss;
+		long milliSecond = ms -  hour * hh - minutes * mi - seconds * ss;
+		Calendar calendar=Calendar.getInstance();
+		calendar.set((int)year, (int)month, (int)day, hour, (int)minutes, (int)seconds);
+		calendar.set(Calendar.MILLISECOND, (int) milliSecond);
+		return calendar;
+		
+	}
+	public static byte[] getInvertBytes(byte[] bytes)
+	{
+		byte[] newBytes = new byte[bytes.length];
+		for (int i = 0; i < bytes.length; i++)
+		{
+			newBytes[i] = bytes[bytes.length - 1 - i];
+
+		}
+		return newBytes;
 	}
 }

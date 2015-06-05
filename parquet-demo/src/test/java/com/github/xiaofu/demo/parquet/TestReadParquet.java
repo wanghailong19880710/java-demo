@@ -43,13 +43,13 @@ public class TestReadParquet
 		MyConvertUtils.convertParquetToCSV(inputFile, ouputFile);
 	}
 	@Test
-	public void test_Convert_Parquet_To_Csv_With_Specified_Field() throws IOException
+	public void convertParquetToCSV_With_Specified_Columns_And_Column_Filter() throws IOException
 	{
 		File ouputFile = new File(
 				"view.csv");
 		Path inputFile = new Path(
 				"/user/hive/warehouse/view_down_infos/year=2015/month=5/day=27/catalog=1/virtual=0/73313b6b3e744c43aac76cec4a383354");
-		MyConvertUtils.convertParquetToCSV_With_Specified_Columns(inputFile, ouputFile);
+		MyConvertUtils.convertParquetToCSV_With_Specified_Columns_And_Column_Filter(inputFile, ouputFile);
 	}
 
 
