@@ -37,12 +37,11 @@ public class MultipleFileOutputDriver extends Configured implements Tool {
 			Reducer<Text, Text, NullWritable, Text> {
 		private MultipleOutputs<NullWritable, Text> outputs;
 
-		public void reduce(Text key, Iterator<Text> values, Context context)
+		public void reduce(Text key, Iterable<Text> values, Context context)
 				throws IOException, InterruptedException {
-			while (values.hasNext())
+			while (values.iterator().hasNext())
 			{
-				System.out.println("===================>>");
-				outputs.write("userid", NullWritable.get(), values.next());
+				outputs.write("userid", NullWritable.get(), values.iterator().next());
 			}
 		}
 
@@ -69,7 +68,6 @@ public class MultipleFileOutputDriver extends Configured implements Tool {
 		job.setMapOutputKeyClass(Text.class);
 		job.setMapOutputValueClass(Text.class);
 
- 
 
 		job.setInputFormatClass(TextInputFormat.class);
 		job.setOutputFormatClass(NullOutputFormat.class);
