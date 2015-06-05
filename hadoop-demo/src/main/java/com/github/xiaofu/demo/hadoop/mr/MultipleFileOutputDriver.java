@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.regex.Pattern;
 
 import org.apache.hadoop.conf.Configured;
+import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
@@ -12,6 +13,8 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
 import org.apache.hadoop.mapreduce.lib.output.NullOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
@@ -61,7 +64,8 @@ public class MultipleFileOutputDriver extends Configured implements Tool {
 
 		 
 		job.setOutputFormatClass(NullOutputFormat.class);
-		
+		FileInputFormat.setInputPaths(job, "/user/hive/warehouse/tmp_view_infos/");
+		FileOutputFormat.setOutputPath(job, new Path("/data"));
 		MultipleOutputs.addNamedOutput(job, "userid", TextOutputFormat.class,
 				NullWritable.class, Text.class);
 		MultipleOutputs.setCountersEnabled(job, true);
@@ -69,6 +73,7 @@ public class MultipleFileOutputDriver extends Configured implements Tool {
 	}
 
 	public static void main(String[] args) throws Exception {
+		System.setProperty("HADOOP_USER_NAME", "vipcloud");
 		int exitCode = ToolRunner.run(new MultipleFileOutputDriver(), args);
 		System.exit(exitCode);
 	}
