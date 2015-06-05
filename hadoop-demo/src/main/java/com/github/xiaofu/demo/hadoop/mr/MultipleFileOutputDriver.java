@@ -41,7 +41,7 @@ public class MultipleFileOutputDriver extends Configured implements Tool {
 				throws IOException, InterruptedException {
 			while (values.iterator().hasNext())
 			{
-				outputs.write("userid", NullWritable.get(), values.iterator().next());
+				outputs.write("userid", NullWritable.get(), values.iterator().next(),key.toString());
 			}
 		}
 
