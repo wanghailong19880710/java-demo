@@ -69,6 +69,8 @@ public class MultipleFileOutputDriver extends Configured implements Tool {
 		MultipleOutputs.addNamedOutput(job, "userid", TextOutputFormat.class,
 				NullWritable.class, Text.class);
 		MultipleOutputs.setCountersEnabled(job, true);
+		job.waitForCompletion(true);
+		
 		return 0;
 	}
 
