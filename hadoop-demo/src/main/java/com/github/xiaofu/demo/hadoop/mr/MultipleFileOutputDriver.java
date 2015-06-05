@@ -16,6 +16,7 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.LazyOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
 import org.apache.hadoop.mapreduce.lib.output.NullOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
@@ -44,11 +45,12 @@ public class MultipleFileOutputDriver extends Configured implements Tool {
 		public void reduce(Text key, Iterable<Text> values, Context context)
 				throws IOException, InterruptedException {
 			while (values.iterator().hasNext()) {
-				//此方法是使用了当前reduce上下文以及输出配置，只是可以指定输出名而已，它会将临时目录的数据移动到正式目录，因为它是标准输出方式
+				// 此方法是使用了当前reduce上下文以及输出配置，只是可以指定输出名而已，它会将临时目录的数据移动到正式目录，因为它是标准输出方式，但是这里会产生空文件，使用lazy包装!
 				outputs.write(NullWritable.get(), values.iterator().next(),
 						key.toString());
-				//这个另起了一个上下文和指定名称的输出配置，此输出无法将临时目录中的数据移动到正式目录
-				//outputs.write("userid", NullWritable.get(), values.iterator().next(),key.toString());
+				// 这个另起了一个上下文和指定名称的输出配置，此输出无法将临时目录中的数据移动到正式目录
+				// outputs.write("userid", NullWritable.get(),
+				// values.iterator().next(),key.toString());
 			}
 		}
 
@@ -78,14 +80,15 @@ public class MultipleFileOutputDriver extends Configured implements Tool {
 		job.setMaxMapAttempts(1);
 		job.setMaxReduceAttempts(1);
 		job.setInputFormatClass(TextInputFormat.class);
-		job.setOutputFormatClass(TextOutputFormat.class);
+		LazyOutputFormat.setOutputFormatClass(job, TextOutputFormat.class);
+		job.setOutputFormatClass(LazyOutputFormat.class);
 		job.setOutputKeyClass(NullWritable.class);
 		FileInputFormat.setInputPaths(job,
 				"/user/hive/warehouse/tmp_view_infos/");
 		FileOutputFormat.setOutputPath(job, new Path("/data"));
 		MultipleOutputs.addNamedOutput(job, "userid", TextOutputFormat.class,
 				NullWritable.class, Text.class);
-		 
+
 		job.waitForCompletion(true);
 
 		return 0;
