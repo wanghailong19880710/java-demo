@@ -14,6 +14,7 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
 import org.apache.hadoop.mapreduce.lib.output.NullOutputFormat;
@@ -33,13 +34,16 @@ public class MultipleFileOutputDriver extends Configured implements Tool {
 	}
 
 	static class DemoReducer extends
-			Reducer<Text, IntWritable, NullWritable, Text> {
+			Reducer<Text, Text, NullWritable, Text> {
 		private MultipleOutputs<NullWritable, Text> outputs;
 
 		public void reduce(Text key, Iterator<Text> values, Context context)
 				throws IOException, InterruptedException {
 			while (values.hasNext())
+			{
+				System.out.println("===================>>");
 				outputs.write("userid", NullWritable.get(), values.next());
+			}
 		}
 
 		protected void setup(Context context) throws IOException,
@@ -61,9 +65,11 @@ public class MultipleFileOutputDriver extends Configured implements Tool {
 		job.setJar("E:\\open-source-projects\\github\\java-demo-parent\\hadoop-demo\\target\\hadoop-demo-0.0.1-SNAPSHOT.jar");
 		job.setMapperClass(DemoMapper.class);
 		job.setReducerClass(DemoReducer.class);
-
-		 
+		job.setMapOutputKeyClass(Text.class);
+		job.setMapOutputValueClass(Text.class);
+		job.setInputFormatClass(TextInputFormat.class);
 		job.setOutputFormatClass(NullOutputFormat.class);
+		job.setOutputKeyClass(NullWritable.class);
 		FileInputFormat.setInputPaths(job, "/user/hive/warehouse/tmp_view_infos/");
 		FileOutputFormat.setOutputPath(job, new Path("/data"));
 		MultipleOutputs.addNamedOutput(job, "userid", TextOutputFormat.class,
