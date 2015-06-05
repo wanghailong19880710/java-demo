@@ -22,6 +22,12 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
+/**
+ * 为reduce指定多个输出文件，还不叫路径 ，有个问题就是都在临时目录不会放到正式目录。就因为我把标准输出禁用了？
+ * 
+ * @author xiaofu
+ * 
+ */
 public class MultipleFileOutputDriver extends Configured implements Tool {
 
 	static class DemoMapper extends Mapper<LongWritable, Text, Text, Text> {
@@ -33,15 +39,14 @@ public class MultipleFileOutputDriver extends Configured implements Tool {
 		}
 	}
 
-	static class DemoReducer extends
-			Reducer<Text, Text, NullWritable, Text> {
+	static class DemoReducer extends Reducer<Text, Text, NullWritable, Text> {
 		private MultipleOutputs<NullWritable, Text> outputs;
 
 		public void reduce(Text key, Iterable<Text> values, Context context)
 				throws IOException, InterruptedException {
-			while (values.iterator().hasNext())
-			{
-				outputs.write("userid", NullWritable.get(), values.iterator().next(),key.toString());
+			while (values.iterator().hasNext()) {
+				outputs.write(NullWritable.get(), values.iterator().next(),
+						key.toString());
 			}
 		}
 
@@ -68,17 +73,19 @@ public class MultipleFileOutputDriver extends Configured implements Tool {
 		job.setMapOutputKeyClass(Text.class);
 		job.setMapOutputValueClass(Text.class);
 
-
+		job.setMaxMapAttempts(1);
+		job.setMaxReduceAttempts(1);
 		job.setInputFormatClass(TextInputFormat.class);
 		job.setOutputFormatClass(NullOutputFormat.class);
 		job.setOutputKeyClass(NullWritable.class);
-		FileInputFormat.setInputPaths(job, "/user/hive/warehouse/tmp_view_infos/");
+		FileInputFormat.setInputPaths(job,
+				"/user/hive/warehouse/tmp_view_infos/");
 		FileOutputFormat.setOutputPath(job, new Path("/data"));
 		MultipleOutputs.addNamedOutput(job, "userid", TextOutputFormat.class,
 				NullWritable.class, Text.class);
-		MultipleOutputs.setCountersEnabled(job, true);
+		 
 		job.waitForCompletion(true);
-		
+
 		return 0;
 	}
 
