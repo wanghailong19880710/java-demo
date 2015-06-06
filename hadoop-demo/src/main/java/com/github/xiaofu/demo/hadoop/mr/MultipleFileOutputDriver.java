@@ -41,17 +41,16 @@ public class MultipleFileOutputDriver extends Configured implements Tool {
 
 		public void reduce(Text key, Iterable<Text> values, Context context)
 				throws IOException, InterruptedException {
-			while (values.iterator().hasNext()) {
+			for (Text value : values) {
 				// 此方法是使用了当前reduce上下文以及输出配置包装了一个上下文，只是可以指定输出名而已，而且这个文件名可以加/，它表达一个路径，前面是路径
 				// ，最后是文件名。但是这里标准输出还是会创建一个空文件，使用lazy包装输出!
-				outputs.write(NullWritable.get(), values.iterator().next(),
-						key.toString());
-				//  以下是另起了一个上下文和指定名称的输出配置，如果单独输出这些路径，无法将临时目录中的数据移动到正式目录
-				outputs.write("userid", NullWritable.get(), values.iterator()
-						.next(), "userid"+"/"+key.toString());
-				//改变了根路径，变成了test2,这里在path内部组合父路径和子路径时发现它使用的是uri进行的解析，所以发现子路径是绝对路径就直接返回了子
-				outputs.write("test2", NullWritable.get(), values.iterator()
-						.next(), "/test2/"+key.toString());
+				outputs.write(NullWritable.get(), value, key.toString());
+				// 以下是另起了一个上下文和指定名称的输出配置，如果单独输出这些路径，无法将临时目录中的数据移动到正式目录
+				outputs.write("userid", NullWritable.get(), value, "userid"
+						+ "/" + key.toString());
+				// 改变了根路径，变成了test2,这里在path内部组合父路径和子路径时发现它使用的是uri进行的解析，所以发现子路径是绝对路径就直接返回了子
+				outputs.write("test2", NullWritable.get(), value, "/test2/"
+						+ key.toString());
 			}
 		}
 

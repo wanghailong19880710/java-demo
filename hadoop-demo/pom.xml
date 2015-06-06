@@ -85,11 +85,13 @@
 			<groupId>org.apache.hadoop</groupId>
 			<artifactId>hadoop-client</artifactId>
 			<version>${hadoop.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.hadoop.gplcompression</groupId>
 			<artifactId>hadoop-lzo</artifactId>
 			<version>0.4.15</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>

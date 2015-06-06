@@ -32,7 +32,7 @@ public class NewMaxTemperature {
       String quality = line.substring(92, 93);
       if (airTemperature != MISSING && quality.matches("[01459]")) {
         /*[*/context.write/*]*/(new Text(year), new IntWritable(airTemperature));
-     
+         
       }
     }
   }
