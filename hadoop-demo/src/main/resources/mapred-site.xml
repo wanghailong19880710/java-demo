@@ -4,8 +4,8 @@
 		<value>yarn</value>
 	</property>
 	<property>
-	<name>yarn.app.mapreduce.am.staging-dir</name>
-	<value>/yarn</value>
+		<name>yarn.app.mapreduce.am.staging-dir</name>
+		<value>/yarn</value>
 	</property>
 
 	<property>
@@ -27,23 +27,29 @@
 			storage class.
 		</description>
 	</property>
-	
-	 
-       <property>    
-    <name>mapred.compress.map.output</name>    
-     <value>true</value>    
-</property>    
-<property>    
-    <name>mapred.map.output.compression.codec</name>    
-    <value>com.hadoop.compression.lzo.LzoCodec</value>    
-</property>    
-<property>    
-    <name>mapred.child.env</name>  
-     <value>LD_LIBRARY_PATH=/usr/local/vipcloud/hadoop/lib/native</value>    
-</property>   
 
-<property>    
-    <name>mapreduce.app-submission.cross-platform</name>    
-    <value>true</value>    
-</property>
+
+	<property>
+		<name>mapred.compress.map.output</name>
+		<value>true</value>
+	</property>
+	<property>
+		<name>mapred.map.output.compression.codec</name>
+		<value>com.hadoop.compression.lzo.LzoCodec</value>
+	</property>
+	<property>
+		<name>mapred.child.env</name>
+		<value>LD_LIBRARY_PATH=/usr/local/vipcloud/hadoop/lib/native</value>
+	</property>
+
+	<property>
+		<name>mapreduce.app-submission.cross-platform</name>
+		<value>true</value>
+	</property>
+	<property>
+		<name>mapred.remote.os</name>
+		<value>Linux</value>
+		<description>Remote MapReduce framework's OS, can be either Linux or
+			Windows</description>
+	</property>
 </configuration>
