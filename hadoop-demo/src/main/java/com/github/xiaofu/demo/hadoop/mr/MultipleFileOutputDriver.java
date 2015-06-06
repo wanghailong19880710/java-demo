@@ -1,12 +1,10 @@
 package com.github.xiaofu.demo.hadoop.mr;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.regex.Pattern;
 
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
@@ -18,7 +16,6 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.LazyOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
-import org.apache.hadoop.mapreduce.lib.output.NullOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
@@ -52,6 +49,7 @@ public class MultipleFileOutputDriver extends Configured implements Tool {
 				//  以下是另起了一个上下文和指定名称的输出配置，如果单独输出这些路径，无法将临时目录中的数据移动到正式目录
 				outputs.write("userid", NullWritable.get(), values.iterator()
 						.next(), "userid"+"/"+key.toString());
+				//改变了根路径，变成了test2,这里在path内部组合父路径和子路径时发现它使用的是uri进行的解析，所以发现子路径是绝对路径就直接返回了子
 				outputs.write("test2", NullWritable.get(), values.iterator()
 						.next(), "/test2/"+key.toString());
 			}
