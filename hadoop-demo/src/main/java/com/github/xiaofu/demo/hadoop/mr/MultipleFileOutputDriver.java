@@ -9,6 +9,7 @@ import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.MRJobConfig;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
@@ -82,9 +83,10 @@ public class MultipleFileOutputDriver extends Configured implements Tool {
 
 		job.setMapOutputKeyClass(Text.class);
 		job.setMapOutputValueClass(Text.class);
-
+		job.getConfiguration().set(MRJobConfig.MAP_JAVA_OPTS, "-Xmx4096m");
+		job.getConfiguration().set(MRJobConfig.MAP_MEMORY_MB, "4096");
 		job.setMaxMapAttempts(1);
-		job.setMaxReduceAttempts(1);
+		job.setMaxReduceAttempts(2);
 		job.setInputFormatClass(TextInputFormat.class);
 		LazyOutputFormat.setOutputFormatClass(job, TextOutputFormat.class);
 		job.setOutputFormatClass(LazyOutputFormat.class);
