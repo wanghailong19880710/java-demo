@@ -1,0 +1,49 @@
+<configuration>
+	<property>
+		<name>mapreduce.framework.name</name>
+		<value>yarn</value>
+	</property>
+	<property>
+	<name>yarn.app.mapreduce.am.staging-dir</name>
+	<value>/yarn</value>
+	</property>
+
+	<property>
+		<name>mapreduce.jobhistory.recovery.enable</name>
+		<value>true</value>
+		<description>Enable the history server to store server state and
+			recover
+			server state upon startup. If enabled then
+			mapreduce.jobhistory.recovery.store.class must be specified.
+		</description>
+	</property>
+	<property>
+		<name>mapreduce.jobhistory.recovery.store.fs.uri</name>
+		<value>/yarn/mapred/history/recoverystore</value>
+		<!--value>hdfs://localhost:9000/mapred/history/recoverystore</value -->
+		<description>The URI where history server state will be stored if
+			HistoryServerFileSystemStateStoreService is configured as the
+			recovery
+			storage class.
+		</description>
+	</property>
+	
+	 
+       <property>    
+    <name>mapred.compress.map.output</name>    
+     <value>true</value>    
+</property>    
+<property>    
+    <name>mapred.map.output.compression.codec</name>    
+    <value>com.hadoop.compression.lzo.LzoCodec</value>    
+</property>    
+<property>    
+    <name>mapred.child.env</name>  
+     <value>LD_LIBRARY_PATH=/usr/local/vipcloud/hadoop/lib/native</value>    
+</property>   
+
+<property>    
+    <name>mapreduce.app-submission.cross-platform</name>    
+    <value>true</value>    
+</property>
+</configuration>
