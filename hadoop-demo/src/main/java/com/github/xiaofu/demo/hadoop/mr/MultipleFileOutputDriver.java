@@ -46,8 +46,8 @@ public class MultipleFileOutputDriver extends Configured implements Tool {
 				// ，最后是文件名。但是这里标准输出还是会创建一个空文件，使用lazy包装输出!
 				outputs.write(NullWritable.get(), value, key.toString());
 				// 以下是另起了一个上下文和指定名称的输出配置，如果单独输出这些路径，无法将临时目录中的数据移动到正式目录
-				outputs.write("userid", NullWritable.get(), value, "userid"
-						+ "/" + key.toString());
+				//outputs.write("userid", NullWritable.get(), value, "userid"
+				//		+ "/" + key.toString());
 				// 改变了根路径，变成了test2,这里在path内部组合父路径和子路径时发现它使用的是uri进行的解析，所以发现子路径是绝对路径就直接返回了子
 				//outputs.write("test2", NullWritable.get(), value, "/test2/"
 //+ key.toString());
