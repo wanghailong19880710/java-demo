@@ -27,6 +27,11 @@ import org.apache.hadoop.util.ToolRunner;
  */
 public class MultipleFileOutputDriver extends Configured implements Tool {
 
+	enum KeyCounter{
+		
+		Counts
+	}
+	
 	static class DemoMapper extends Mapper<LongWritable, Text, Text, Text> {
 
 		public void map(LongWritable key, Text value, Context context)
@@ -41,6 +46,7 @@ public class MultipleFileOutputDriver extends Configured implements Tool {
 
 		public void reduce(Text key, Iterable<Text> values, Context context)
 				throws IOException, InterruptedException {
+			context.getCounter(KeyCounter.Counts).increment(1);
 			for (Text value : values) {
 				// 此方法是使用了当前reduce上下文以及输出配置包装了一个上下文，只是可以指定输出名而已，而且这个文件名可以加/，它表达一个路径，前面是路径
 				// ，最后是文件名。但是这里标准输出还是会创建一个空文件，使用lazy包装输出!
