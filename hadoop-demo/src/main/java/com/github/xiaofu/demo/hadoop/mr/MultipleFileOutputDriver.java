@@ -49,8 +49,8 @@ public class MultipleFileOutputDriver extends Configured implements Tool {
 				outputs.write("userid", NullWritable.get(), value, "userid"
 						+ "/" + key.toString());
 				// 改变了根路径，变成了test2,这里在path内部组合父路径和子路径时发现它使用的是uri进行的解析，所以发现子路径是绝对路径就直接返回了子
-				outputs.write("test2", NullWritable.get(), value, "/test2/"
-						+ key.toString());
+				//outputs.write("test2", NullWritable.get(), value, "/test2/"
+//+ key.toString());
 			}
 		}
 
