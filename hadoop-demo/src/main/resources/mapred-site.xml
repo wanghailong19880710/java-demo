@@ -42,10 +42,7 @@
 		<value>LD_LIBRARY_PATH=/usr/local/vipcloud/hadoop/lib/native</value>
 	</property>
 
-	<property>
-		<name>mapreduce.app-submission.cross-platform</name>
-		<value>true</value>
-	</property>
+ 
 	<property>
 		<name>mapred.remote.os</name>
 		<value>Linux</value>
