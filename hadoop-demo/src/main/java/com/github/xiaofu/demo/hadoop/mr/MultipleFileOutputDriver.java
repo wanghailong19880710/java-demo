@@ -49,9 +49,11 @@ public class MultipleFileOutputDriver extends Configured implements Tool {
 				// ，最后是文件名。但是这里标准输出还是会创建一个空文件，使用lazy包装输出!
 				outputs.write(NullWritable.get(), values.iterator().next(),
 						key.toString());
-				// 这个另起了一个上下文和指定名称的输出配置，此输出无法将临时目录中的数据移动到正式目录
-				// outputs.write("userid", NullWritable.get(),
-				// values.iterator().next(),key.toString());
+				//  以下是另起了一个上下文和指定名称的输出配置，如果单独输出这些路径，无法将临时目录中的数据移动到正式目录
+				outputs.write("userid", NullWritable.get(), values.iterator()
+						.next(), "userid"+"/"+key.toString());
+				outputs.write("test2", NullWritable.get(), values.iterator()
+						.next(), "/test2/"+key.toString());
 			}
 		}
 
@@ -88,6 +90,8 @@ public class MultipleFileOutputDriver extends Configured implements Tool {
 				"/user/hive/warehouse/tmp_view_infos/");
 		FileOutputFormat.setOutputPath(job, new Path("/data"));
 		MultipleOutputs.addNamedOutput(job, "userid", TextOutputFormat.class,
+				NullWritable.class, Text.class);
+		MultipleOutputs.addNamedOutput(job, "test2", TextOutputFormat.class,
 				NullWritable.class, Text.class);
 
 		job.waitForCompletion(true);
