@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.MRJobConfig;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
@@ -12,7 +13,10 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 // vv NewMaxTemperature
 public class NewMaxTemperature {
-  
+   static {
+	   
+	   System.setProperty("hadoop.home.dir", "E:\\open-source-projects\\big-data\\hadoop\\install\\hadoop-2.3.0-cdh5.0.0");
+   }
   static class NewMaxTemperatureMapper
     /*[*/extends Mapper<LongWritable, Text, Text, IntWritable>/*]*/ {
 
@@ -66,12 +70,13 @@ public class NewMaxTemperature {
     
     job.setMapperClass(NewMaxTemperatureMapper.class);
     job.setReducerClass(NewMaxTemperatureReducer.class);
-
+     
     job.setOutputKeyClass(Text.class);
     job.setOutputValueClass(IntWritable.class);
-    job.getConfiguration().set("fs.default.name","file:///");
-    job.getConfiguration().set("mapred.job.tracker", "local");
+     job.getConfiguration().set("fs.defaultFS", "file:///");
+     job.getConfiguration().set("mapred.job.tracker", "local");
     
+     job.getConfiguration().setBoolean(MRJobConfig.MAP_OUTPUT_COMPRESS, false);
     /*[*/System.exit(job.waitForCompletion(true) ? 0 : 1);/*]*/
   }
 }
