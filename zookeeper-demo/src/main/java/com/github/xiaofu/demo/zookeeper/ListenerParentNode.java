@@ -113,8 +113,8 @@ public class ListenerParentNode implements IZkStateListener, IZkDataListener,
 	@Override
 	public void handleDataDeleted(String dataPath) throws Exception {
 
-		LOG.info("parent node be deleted!");
-		createZNode();
+		System.out.println("parent node be deleted!");
+		//createZNode();
 
 	}
 
