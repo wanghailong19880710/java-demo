@@ -32,7 +32,7 @@ public class ZkMain {
 	 */
 	public static void main(String[] args) throws InterruptedException {
 
-//		normalNodeOperation();
+		//normalNodeOperation();
 		 createChildNode();
 		// deleteChildNode();
 		// setChildNodeData();
@@ -54,11 +54,11 @@ public class ZkMain {
 	 */
 	private static void createChildNode() throws InterruptedException {
 		ListenerParentNode listener1 = new ListenerParentNode();
-		ListenerChildNode listener2 = new ListenerChildNode();
+		//ListenerChildNode listener2 = new ListenerChildNode();
 		listener1.startWatcher();
-		Thread.currentThread().sleep(1000 * 2);
-		listener2.startWatcher();
-		Thread.currentThread().join();
+		Thread.currentThread().sleep(1000 * 2000);
+		//listener2.startWatcher();
+		//Thread.currentThread().join();
 	}
 
 	/**

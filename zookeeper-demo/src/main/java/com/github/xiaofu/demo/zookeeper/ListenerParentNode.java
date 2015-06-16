@@ -43,11 +43,12 @@ public class ListenerParentNode implements IZkStateListener, IZkDataListener,
 	}
 
 	public ListenerParentNode() {
+		// 这里封装了zookeeper对象，一构造zookeeper对象就开始创建连接了，但是不一定创建好了，可能完了，可能没有完成
 		zkClient = ZKMgr.getNewInstance();
 	}
 
 	protected void createZNode() {
-		 
+
 		String resultSatus = ZkUtils.createZNodeIfNotExists(zkClient,
 				ZKConstant.PARENT_PATH, 0, CreateMode.PERSISTENT);
 		if (resultSatus != null) {
@@ -59,59 +60,76 @@ public class ListenerParentNode implements IZkStateListener, IZkDataListener,
 	}
 
 	/**
-	 * 监控程序状态，如果持掉，临时结点也会被删除
+	 * 
 	 * 
 	 * @author fulaihua 2014-7-11 下午3:05:29
 	 */
 	public void startWatcher() {
-		createZNode();
+		// 由于连接速度问题，那么subscribeStateChanges注册的回调可能会收到，可能不会收到KeeperState.SyncConnected状态
+		// 如果是先创建节点，再注册事件，handleDataChange就无法回调
+
 		zkClient.unsubscribeAll();
-		zkClient.subscribeChildChanges(
-				ZKConstant.PARENT_PATH, this);
+		zkClient.subscribeChildChanges(ZKConstant.PARENT_PATH, this);
 		zkClient.subscribeStateChanges(this);
 		zkClient.subscribeDataChanges(ZKConstant.PARENT_PATH, this);
 
 		LOG.info(this.getClass().getSimpleName()
 				+ "  started watcher to zookeeper for path "
 				+ ZKConstant.PARENT_PATH);
+		createZNode();
 	}
 
+	/**
+	 * 如果由于过期而产生了一个新会话会回调此方法
+	 */
 	@Override
 	public void handleNewSession() throws Exception {
 		LOG.info("begin  a new session");
 		startWatcher();
 	}
 
-	 
+	/**
+	 * 状态发生改变时会回调此方法，测试，直接把ZK关了，客户端就会不断尝试，就会出现各种状态 断开连接状态，连接成功状态，过期状态等
+	 */
 	@Override
 	public void handleStateChanged(KeeperState state) throws Exception {
-		System.out.println("I'm changed state:"+state.toString());
+		System.out.println("I'm changed state:" + state.toString());
 	}
+
 	/**
-	 * 当子节点被创建或删除时，在父节点对节点的观察会被触发
+	 * 当前节点创建时，当前节点的子节点被创建或删除时,当前节点的数据被修改
 	 */
 	@Override
 	public void handleDataChange(String dataPath, Object data) throws Exception {
+		System.out.println("data changed");
 		System.out.println("dataPath:" + dataPath);
 		System.out.println("data:" + data);
 	}
 
-	 
+	/**
+	 * 如果当前节点被删除：读不到数据抛异常，所以需要回调此方法
+	 * 
+	 */
 	@Override
 	public void handleDataDeleted(String dataPath) throws Exception {
-		
+
 		LOG.info("parent node be deleted!");
 		createZNode();
-		
+
 	}
 
+	/**
+	 * 当前节点的创建与删除，当前节点的子节点删除与创建
+	 */
 	@Override
 	public void handleChildChange(String parentPath, List<String> currentChilds)
 			throws Exception {
+		System.out.println("child node changed");
 		System.out.println("parentPath:" + parentPath);
-		for (String string : currentChilds) {
-			System.out.println(string);
-		}
+		if (currentChilds != null)
+			for (String string : currentChilds) {
+				System.out.println(string);
+			}
 
 	}
 

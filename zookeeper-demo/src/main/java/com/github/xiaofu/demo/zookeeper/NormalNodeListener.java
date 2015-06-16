@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class NormalNodeListener implements IZkStateListener, IZkDataListener {
-	private boolean isHolder;
 	private ZkClient zkClient;
 	protected static final Logger LOG = LoggerFactory
 			.getLogger(NormalNodeListener.class);
@@ -32,7 +31,6 @@ public class NormalNodeListener implements IZkStateListener, IZkDataListener {
 				ZKConstant.NORMAL_PATH, 0, CreateMode.EPHEMERAL);
 		if (resultSatus != null) {
 			System.out.println("I'm  leader");
-			isHolder = true;
 		} else {
 			System.out.println("I'm  follower");
 
@@ -40,15 +38,14 @@ public class NormalNodeListener implements IZkStateListener, IZkDataListener {
 	}
 
 	public void startWatcher() {
-		createZNode();
+		
 		zkClient.unsubscribeAll();
-
 		zkClient.subscribeStateChanges(this);
 		zkClient.subscribeDataChanges(ZKConstant.NORMAL_PATH, this);
 		System.out.println(this.getClass().getSimpleName()
 				+ "  started watcher to zookeeper for path "
 				+ ZKConstant.NORMAL_PATH);
-
+		createZNode();
 	}
 
 	@Override
