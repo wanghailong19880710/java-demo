@@ -98,6 +98,8 @@ public class ListenerParentNode implements IZkStateListener, IZkDataListener,
 
 	/**
 	 * 当前节点创建时，当前节点的子节点被创建或删除时,当前节点的数据被修改
+	 * @param dataPath 数据改变节点的绝对路径
+	 * @param data 数据
 	 */
 	@Override
 	public void handleDataChange(String dataPath, Object data) throws Exception {
@@ -108,24 +110,34 @@ public class ListenerParentNode implements IZkStateListener, IZkDataListener,
 
 	/**
 	 * 如果当前节点被删除：读不到数据抛异常，所以需要回调此方法
-	 * 
+	 * @param dataPath 被删除节点的绝对路径
 	 */
 	@Override
 	public void handleDataDeleted(String dataPath) throws Exception {
 
 		System.out.println("parent node be deleted!");
+		System.out.println(dataPath);
 		//createZNode();
 
 	}
-
 	/**
 	 * 当前节点的创建与删除，当前节点的子节点删除与创建
+	 * @param parentPath 父节点，一直有值，不会为NULL
+	 * @param currentChilds 子节点列表，如果没有子节点，返回一个空集合，若是父节点不存在（被删除等），此参数为NULL
 	 */
 	@Override
 	public void handleChildChange(String parentPath, List<String> currentChilds)
 			throws Exception {
 		System.out.println("child node changed");
 		System.out.println("parentPath:" + parentPath);
+		if(currentChilds==null)
+		{
+			System.out.println("currentChilds is empty");
+		}
+		else
+		{
+			System.out.println("currentChilds counts:"+currentChilds.size());
+		}
 		if (currentChilds != null)
 			for (String string : currentChilds) {
 				System.out.println(string);
