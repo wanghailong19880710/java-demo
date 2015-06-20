@@ -10,7 +10,7 @@ public class ListenerChildNode extends ListenerParentNode  {
 	{
 		// 创建一个临时节点，创建成功设置一个状态
 				String resultSatus = ZkUtils.createZNodeIfNotExists(getZkClient(),
-						ZKConstant.CHILD_PATH, 0, CreateMode.EPHEMERAL);
+						ZKConstant.CHILD_PATH, null, CreateMode.EPHEMERAL);
 				if (resultSatus != null) {
 					LOG.info("I'm child  leader");
 					setHolder(true);

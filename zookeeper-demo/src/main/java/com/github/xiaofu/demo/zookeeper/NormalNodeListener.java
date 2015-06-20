@@ -28,7 +28,7 @@ public class NormalNodeListener implements IZkStateListener, IZkDataListener {
 	protected void createZNode() {
 
 		String resultSatus = ZkUtils.createZNodeIfNotExists(zkClient,
-				ZKConstant.NORMAL_PATH, 0, CreateMode.EPHEMERAL);
+				ZKConstant.NORMAL_PATH, null, CreateMode.EPHEMERAL);
 		if (resultSatus != null) {
 			System.out.println("I'm  leader");
 		} else {

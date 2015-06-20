@@ -50,7 +50,7 @@ public class ListenerParentNode implements IZkStateListener, IZkDataListener,
 	protected void createZNode() {
 
 		String resultSatus = ZkUtils.createZNodeIfNotExists(zkClient,
-				ZKConstant.PARENT_PATH, 0, CreateMode.PERSISTENT);
+				ZKConstant.PARENT_PATH, null, CreateMode.PERSISTENT);
 		if (resultSatus != null) {
 			LOG.info("I'm parent leader");
 			isHolder = true;
@@ -97,7 +97,7 @@ public class ListenerParentNode implements IZkStateListener, IZkDataListener,
 	}
 
 	/**
-	 * 当前节点创建时，当前节点的子节点被创建或删除时,当前节点的数据被修改
+	 * 当前节点创建,当前节点的数据被修改
 	 * @param dataPath 数据改变节点的绝对路径
 	 * @param data 数据
 	 */
