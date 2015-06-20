@@ -46,23 +46,24 @@
 		<module>cxf-web-demo</module>
 		<module>hbase-demo</module>
 		<module>thrift-demo</module>
+		<module>dbcp-demo</module>
 	</modules>
 
 	<repositories>
-	<repository>
+		<repository>
 			<id>releases</id>
 			<name>releases</name>
-			<url>http://192.168.30.55:8081/nexus/content/repositories/releases/</url>
+			<url>http://localhost:8081/nexus/content/repositories/releases/</url>
 		</repository>
 		<repository>
 			<id>snapshots</id>
 			<name>Snapshots</name>
-			<url>http://192.168.30.55:8081/nexus/content/repositories/snapshots/</url>
+			<url>http://localhost:8081/nexus/content/repositories/snapshots/</url>
 		</repository>
 		<repository>
 			<id>3rdparty</id>
 			<name>3rdparty</name>
-			<url>http://192.168.30.55:8081/nexus/content/repositories/thirdparty/</url>
+			<url>http://localhost:8081/nexus/content/repositories/thirdparty/</url>
 		</repository>
 		<repository>
 			<id>cdh.repo</id>
