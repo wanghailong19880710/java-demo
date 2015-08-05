@@ -15,6 +15,9 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 // vv NewMaxTemperature
 public class NewMaxTemperature {
+	/**
+	 * 本地运行需要SHELL，所以需要指定HADOOP目录
+	 */
 	static {
 
 		System.setProperty("hadoop.home.dir",

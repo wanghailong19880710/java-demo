@@ -22,7 +22,7 @@ import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
 /**
- * 
+ * 远程提交到集群上去运行
  * @author xiaofu
  * 
  */
