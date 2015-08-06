@@ -65,12 +65,13 @@ public class ClientOp {
 	public static void main(String[] args) throws IOException {
 
 		// deleteRow(TABLE,"aa");
-		//createTable("test_flh", new String[] { "colfam1", "colfam2" });
+		//createTable(TABLE, new String[] { "colfam1", "colfam2" });
 		// batchTest("test_flh");
-		// selectRow(TABLE,"row2");
+		selectRow(TABLE,"row2");
 		// exportOnlineToLocal();
-		System.out.println(idToMD5Hash("JG@1494"));
+		//System.out.println(idToMD5Hash("JG@1494"));
 		//inportDataToTest();
+		//writeRow(TABLE,"row1","colfam1","qual1","2");
 	}
 
 	public static void createTable(String tablename, String[] cfs)
@@ -103,12 +104,12 @@ public class ClientOp {
 		}
 	}
 
-	public static void writeRow(String tablename, String rowKey,
+	public static void writeRow(String tablename, String rowKey,String family,
 			String qualifier, String value) {
 		try {
 			HTable table = new HTable(conf, tablename);
 			Put put = new Put(Bytes.toBytes(rowKey));
-			put.add(Bytes.toBytes("cf"), Bytes.toBytes(qualifier),
+			put.add(Bytes.toBytes(family), Bytes.toBytes(qualifier),
 					Bytes.toBytes(value));
 
 			table.put(put);

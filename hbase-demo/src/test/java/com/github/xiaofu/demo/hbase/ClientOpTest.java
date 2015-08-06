@@ -30,24 +30,24 @@ public class ClientOpTest {
 
 	@Test
 	public void writeRow() throws IOException {
-		ClientOp.writeRow(ClientOp.TABLE, "row1", "a", "value1");
-		ClientOp.writeRow(ClientOp.TABLE, "row1", "b", "value1");
+		ClientOp.writeRow(ClientOp.TABLE, "row1","colfam1", "a", "value1");
+		ClientOp.writeRow(ClientOp.TABLE, "row1","colfam1", "b", "value1");
 		ClientOp.selectRow(TABLE, "row1");
 		ClientOp.deleteRow(TABLE, "row1");
 	}
 
 	// @Test
 	public void deleteRow() throws IOException {
-		ClientOp.writeRow(ClientOp.TABLE, "row1", "a", "value1");
-		ClientOp.writeRow(ClientOp.TABLE, "row1", "b", "value1");
+		ClientOp.writeRow(ClientOp.TABLE, "row1","colfam1", "a", "value1");
+		ClientOp.writeRow(ClientOp.TABLE, "row1","colfam1", "b", "value1");
 		ClientOp.deleteRow(TABLE, "row1");
 	}
 
 	@Test
 	public void deteteRowSpecifiedColumnVersion() throws IOException {
-		ClientOp.writeRow(ClientOp.TABLE, "row1", "a", "value1");
-		ClientOp.writeRow(ClientOp.TABLE, "row1", "a", "value1");
-		ClientOp.writeRow(ClientOp.TABLE, "row1", "a", "value1");
+		ClientOp.writeRow(ClientOp.TABLE, "row1","colfam1", "a", "value1");
+		ClientOp.writeRow(ClientOp.TABLE, "row1","colfam1", "a", "value1");
+		ClientOp.writeRow(ClientOp.TABLE, "row1","colfam1", "a", "value1");
 		HTable table = new HTable(conf, TABLE);
 		List<Delete> list = new ArrayList<Delete>();
 		Delete d1 = new Delete("row1".getBytes());
@@ -61,8 +61,8 @@ public class ClientOpTest {
 
 	@Test
 	public void appendValue() throws IOException {
-		ClientOp.writeRow(ClientOp.TABLE, "row1", "a", "value1");
-		ClientOp.writeRow(ClientOp.TABLE, "row1", "a", "value1");
+		ClientOp.writeRow(ClientOp.TABLE, "row1","colfam1", "a", "value1");
+		ClientOp.writeRow(ClientOp.TABLE, "row1","colfam1", "a", "value1");
 		ClientOp.selectRow(TABLE, "row1");
 		HTable table = new HTable(conf, TABLE);
 		// 历史版本直接删除了，只有最新版本+追加值了
@@ -77,8 +77,8 @@ public class ClientOpTest {
 	@Test
 	public void incrementValue() throws IOException {
 
-		ClientOp.writeRow(ClientOp.TABLE, "row1", "a", "1");
-		ClientOp.writeRow(ClientOp.TABLE, "row1", "a", "1");
+		ClientOp.writeRow(ClientOp.TABLE, "row1","colfam1", "a", "1");
+		ClientOp.writeRow(ClientOp.TABLE, "row1","colfam1", "a", "1");
 		ClientOp.selectRow(TABLE, "row1");
 		HTable table = new HTable(conf, TABLE);
 		Increment increment = new Increment("row1".getBytes());
