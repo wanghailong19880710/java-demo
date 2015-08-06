@@ -184,6 +184,7 @@ public class Config
 
     private static final String _version;
     private static boolean DEBUG = false;
+   
     private static final Map<String, String> __properties = new HashMap<String, String>();
     private final Map<String, Classpath> _classpaths = new HashMap<String, Classpath>();
     private final List<String> _xml = new ArrayList<String>();
@@ -435,7 +436,10 @@ public class Config
     {
         __properties.clear();
     }
-    
+    /**
+     * 给XmlConfiguration类调用获取在系统属性或在命令行中指定的属性
+     * @return
+     */
     public static Properties getProperties()
     {
         Properties properties = new Properties();

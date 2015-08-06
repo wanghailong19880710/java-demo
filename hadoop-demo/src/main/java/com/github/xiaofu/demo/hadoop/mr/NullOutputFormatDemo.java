@@ -1,29 +1,25 @@
 package com.github.xiaofu.demo.hadoop.mr;
 
-// cc NewMaxTemperature Application to find the maximum temperature in the weather dataset using the new context objects MapReduce API
 import java.io.IOException;
 
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.*;
-import org.apache.hadoop.mapred.LocalJobRunner;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.MRJobConfig;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.NullOutputFormat;
 
-// vv NewMaxTemperature
-public class NewMaxTemperature {
-	/**
-	 * 本地运行需要SHELL，所以需要指定HADOOP目录
-	 */
+public class NullOutputFormatDemo   {
 	static {
 
 		System.setProperty("hadoop.home.dir",
 				"E:\\open-source-projects\\big-data\\hadoop\\install\\hadoop-2.3.0-cdh5.0.0");
 	}
-
 	static class NewMaxTemperatureMapper
 	/* [ */extends Mapper<LongWritable, Text, Text, IntWritable>/* ] */{
 
@@ -65,8 +61,10 @@ public class NewMaxTemperature {
 			/* [ */context.write/* ] */(key, new IntWritable(maxValue));
 		}
 	}
-
-	public static void main(String[] args) throws Exception {
+	
+ 
+	public static void main(String[] args) throws IllegalArgumentException, IOException, InterruptedException, ClassNotFoundException {
+		 
 		if (args.length != 2) {
 			System.err
 					.println("Usage: NewMaxTemperature <input path> <output path>");
@@ -75,14 +73,12 @@ public class NewMaxTemperature {
 
 		/* [ */Job job = new Job();
 		job.setJarByClass(NewMaxTemperature.class);/* ] */
-
+		job.setOutputFormatClass(NullOutputFormat.class);
 		FileInputFormat.addInputPath(job, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 		 
 		job.setMapperClass(NewMaxTemperatureMapper.class);
 		job.setReducerClass(NewMaxTemperatureReducer.class);
-		FileInputFormat.setMinInputSplitSize(job, 1024*1024*256);
-		job.getConfiguration().setInt(MRJobConfig.IO_SORT_MB, 4);
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(IntWritable.class);
 		job.getConfiguration().set("fs.defaultFS", "file:///");
@@ -95,4 +91,3 @@ public class NewMaxTemperature {
 		System.exit(job.waitForCompletion(true) ? 0 : 1);
 	}
 }
-// ^^ NewMaxTemperature
