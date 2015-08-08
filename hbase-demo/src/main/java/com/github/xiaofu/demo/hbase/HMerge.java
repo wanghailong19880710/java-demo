@@ -358,7 +358,7 @@ class HMerge {
 							+ Bytes.toStringBinary(regionsToDelete[r]));
 				}
 			}
-			newRegion.getRegionInfo().setOffline(true);
+			//newRegion.getRegionInfo().setOffline(true);
 
 			Put put = new Put(newRegion.getRegionName());
 			put.add(HConstants.CATALOG_FAMILY, HConstants.REGIONINFO_QUALIFIER,
