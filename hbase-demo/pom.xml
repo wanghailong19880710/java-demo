@@ -8,27 +8,21 @@
 	</parent>
 	<artifactId>hbase-demo</artifactId>
 	<dependencies>
-	 <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-  
-      </dependency>
 		<dependency>
-			<groupId>com.cqvip.vipcloud</groupId>
-			<artifactId>hadoop-core</artifactId>
-			<version>0.20.2-SNAPSHOT</version>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+
 		</dependency>
 
 		<dependency>
-			<groupId>com.cqvip.vipcloud</groupId>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-core</artifactId>
+			<version>0.20.2-cdh3u3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.hbase</groupId>
 			<artifactId>hbase</artifactId>
 			<version>0.94.10</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>hadoop-core</artifactId>
-					<groupId>org.apache.hadoop</groupId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 	</dependencies>
 	<!-- <dependencies> <dependency> <groupId>org.apache.hbase</groupId> <artifactId>hbase-client</artifactId> 

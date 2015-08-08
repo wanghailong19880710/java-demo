@@ -81,7 +81,7 @@ public class ClientOp {
 		//writeRow(TABLE,"row6","colfam1","qual1","3");
 		//mergeRegionOnline();
 		//TestRegion();
-		scanRoot();
+		scanRootOrMeta();
 	}
 
 	public static void createTable(String tablename, String[] cfs)
@@ -283,14 +283,14 @@ public class ClientOp {
 	{
 		Scan scan=new Scan();
 		//scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("regioninfo"));
-		scan.addFamily(Bytes.toBytes("info"));
+		scan.addFamily( HConstants.CATALOG_FAMILY);
 		HTable table=new HTable(conf, HConstants.META_TABLE_NAME);
 		ResultScanner scanner= table.getScanner(scan);
 		try {
 			
 			for (Result result : scanner) {
 			   System.out.println((HRegionInfo) Writables.getWritable(
-					  result.getValue(Bytes.toBytes("info"), Bytes.toBytes("regioninfo")), new HRegionInfo()));
+					  result.getValue(HConstants.CATALOG_FAMILY, HConstants.REGIONINFO_QUALIFIER), new HRegionInfo()));
 				System.out.println(result.toString());
 			}
 		} catch (Exception e) {
