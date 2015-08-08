@@ -6,11 +6,16 @@ package com.github.xiaofu.demo.hbase;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
+import org.apache.hadoop.hbase.HConstants;
+import org.apache.hadoop.hbase.HRegionInfo;
+import org.apache.hadoop.hbase.HServerAddress;
 import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.KeyValue;
 import org.apache.hadoop.hbase.MasterNotRunningException;
@@ -39,13 +44,14 @@ public class ClientOp {
 	public static Configuration conf = null;
 	private static HTable onlineTable;
 	private static HTable localTable;
+	public static String TABLE = "test_flh";
 	static {
 		conf = HBaseConfiguration.create();
 		try {
 
 			conf.set("hbase.zookeeper.quorum",
 					"node203.vipcloud,node204.vipcloud,node205.vipcloud");
-			localTable = new HTable(conf, "test_flh");
+			localTable = new HTable(conf, TABLE);
 			/*
 			 * conf.set( "hbase.zookeeper.quorum",
 			 * "node600.vipcloud,node601.vipcloud,node602.vipcloud,node603.vipcloud,node604.vipcloud"
@@ -56,7 +62,7 @@ public class ClientOp {
 			e.printStackTrace();
 		}
 	}
-	public static String TABLE = "test_flh";
+	
 
 	/**
 	 * @param args
@@ -65,13 +71,15 @@ public class ClientOp {
 	public static void main(String[] args) throws IOException {
 
 		// deleteRow(TABLE,"aa");
-		//createTable(TABLE, new String[] { "colfam1", "colfam2" });
+		// createTable(TABLE, new String[] { "colfam1", "colfam2" });
 		// batchTest("test_flh");
-		selectRow(TABLE,"row2");
+		//selectRow(TABLE, "row2");
 		// exportOnlineToLocal();
-		//System.out.println(idToMD5Hash("JG@1494"));
-		//inportDataToTest();
-		//writeRow(TABLE,"row1","colfam1","qual1","2");
+		// System.out.println(idToMD5Hash("JG@1494"));
+		// inportDataToTest();
+		writeRow(TABLE,"row6","colfam1","qual1","3");
+		//mergeRegionOnline();
+		//TestRegion();
 	}
 
 	public static void createTable(String tablename, String[] cfs)
@@ -104,11 +112,11 @@ public class ClientOp {
 		}
 	}
 
-	public static void writeRow(String tablename, String rowKey,String family,
+	public static void writeRow(String tablename, String rowKey, String family,
 			String qualifier, String value) {
 		try {
 			HTable table = new HTable(conf, tablename);
-			Put put = new Put(Bytes.toBytes(rowKey));
+			Put put = new Put(Bytes.toBytes(idToMD5Hash(rowKey)));
 			put.add(Bytes.toBytes(family), Bytes.toBytes(qualifier),
 					Bytes.toBytes(value));
 
@@ -209,9 +217,10 @@ public class ClientOp {
 	public static void inportDataToTest() throws IOException {
 		List<Put> lists = new ArrayList<Put>();
 		for (int i = 0; i < 1000; i++) {
-			Put put = new Put(Bytes.toBytes(idToMD5Hash(UUID.randomUUID().toString().replace("-", ""))));
+			Put put = new Put(Bytes.toBytes(idToMD5Hash(UUID.randomUUID()
+					.toString().replace("-", ""))));
 			put.setWriteToWAL(false);
-			
+
 			put.add(Bytes.toBytes("colfam1"), Bytes.toBytes("aa"),
 					Bytes.toBytes("1"));
 			lists.add(put);
@@ -254,6 +263,19 @@ public class ClientOp {
 			localTable.close();
 
 		}
+	}
+
+ 
+	
+	@SuppressWarnings("deprecation")
+	public static void TestRegion() throws IOException
+	{
+		Map<HRegionInfo, HServerAddress>  maps=	localTable.getRegionsInfo();
+		for (Map.Entry<HRegionInfo,HServerAddress> item : maps.entrySet()) {
+			System.out.println(item.getKey().getRegionNameAsString());
+			
+		}
+		System.out.println("region counts:"+maps.size());
 	}
 
 }
