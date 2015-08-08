@@ -35,6 +35,7 @@ import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.hbase.util.MD5Hash;
 import org.apache.hadoop.hbase.util.RegionSplitter;
 import org.apache.hadoop.hbase.util.RegionSplitter.SplitAlgorithm;
+import org.apache.hadoop.hbase.util.Writables;
 
 /**
  * @author fulaihua
@@ -57,7 +58,7 @@ public class ClientOp {
 			 * "node600.vipcloud,node601.vipcloud,node602.vipcloud,node603.vipcloud,node604.vipcloud"
 			 * ); onlineTable = new HTable(conf, "file_uploader");
 			 */
-		} catch (IOException e) {
+		} catch (Exception e) {
 
 			e.printStackTrace();
 		}
@@ -77,9 +78,10 @@ public class ClientOp {
 		// exportOnlineToLocal();
 		// System.out.println(idToMD5Hash("JG@1494"));
 		// inportDataToTest();
-		writeRow(TABLE,"row6","colfam1","qual1","3");
+		//writeRow(TABLE,"row6","colfam1","qual1","3");
 		//mergeRegionOnline();
 		//TestRegion();
+		scanRoot();
 	}
 
 	public static void createTable(String tablename, String[] cfs)
@@ -277,16 +279,18 @@ public class ClientOp {
 		}
 		System.out.println("region counts:"+maps.size());
 	}
-	public static void scanRoot() throws IOException
+	public static void scanRootOrMeta() throws IOException
 	{
 		Scan scan=new Scan();
 		//scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("regioninfo"));
 		scan.addFamily(Bytes.toBytes("info"));
-		HTable table=new HTable(conf, HConstants.ROOT_TABLE_NAME);
+		HTable table=new HTable(conf, HConstants.META_TABLE_NAME);
 		ResultScanner scanner= table.getScanner(scan);
 		try {
 			
 			for (Result result : scanner) {
+			   System.out.println((HRegionInfo) Writables.getWritable(
+					  result.getValue(Bytes.toBytes("info"), Bytes.toBytes("regioninfo")), new HRegionInfo()));
 				System.out.println(result.toString());
 			}
 		} catch (Exception e) {
