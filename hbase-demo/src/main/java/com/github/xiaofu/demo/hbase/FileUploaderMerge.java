@@ -10,8 +10,6 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.HConstants;
 import org.apache.hadoop.hbase.HRegionInfo;
-import org.apache.hadoop.hbase.MasterNotRunningException;
-import org.apache.hadoop.hbase.ZooKeeperConnectionException;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
 import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.client.Result;
@@ -28,20 +26,15 @@ public class FileUploaderMerge {
 	public static Configuration conf = null;
 	private static HTable onlineTable;
 	private static HTable localTable;
-	public static String TABLE = "test_flh";
+	public static String TABLE = "test_uploader";
 	static {
 		conf = HBaseConfiguration.create();
 		try {
 
 			conf.set("hbase.zookeeper.quorum",
 					"node203.vipcloud,node204.vipcloud,node205.vipcloud");
-			localTable = new HTable(conf,TABLE);
-			/*
-			 * conf.set( "hbase.zookeeper.quorum",
-			 * "node600.vipcloud,node601.vipcloud,node602.vipcloud,node603.vipcloud,node604.vipcloud"
-			 * ); onlineTable = new HTable(conf, "file_uploader");
-			 */
-		} catch (IOException e) {
+			
+		} catch (Exception e) {
 
 			e.printStackTrace();
 		}
@@ -60,10 +53,10 @@ public class FileUploaderMerge {
 			HMerge.merge(conf, FileSystem.get(fsConf),
 					Bytes.toBytes(TABLE),null,null);
 		} finally {
-			//admin.enableTable(TABLE);
+			admin.enableTable(TABLE);
 			admin.close();
 		}
-		scanTableRegionFromMeta();
+		//scanTableRegionFromMeta();
 
 	}
 	public static void scanTableRegionFromMeta() throws IOException
@@ -74,9 +67,7 @@ public class FileUploaderMerge {
 		scan.setStartRow(HRegionInfo.createRegionName(Bytes.toBytes(TABLE),
 				HConstants.EMPTY_START_ROW,
 				Bytes.toBytes(HConstants.ZEROES), false));
-		scan.setStopRow(HRegionInfo.createRegionName(Bytes.toBytes(TABLE),
-				Bytes.toBytes( HConstants.NINES),
-				Bytes.toBytes(HConstants.NINES), false));
+		
 		HTable table=new HTable(conf, HConstants.META_TABLE_NAME);
 		ResultScanner scanner= table.getScanner(scan);
 		try {

@@ -72,16 +72,20 @@ public class ClientOp {
 	public static void main(String[] args) throws IOException {
 
 		// deleteRow(TABLE,"aa");
-		// createTable(TABLE, new String[] { "colfam1", "colfam2" });
+	     createTable(TABLE, new String[] { "colfam1", "colfam2" });
 		// batchTest("test_flh");
 		//selectRow(TABLE, "row2");
 		// exportOnlineToLocal();
 		// System.out.println(idToMD5Hash("JG@1494"));
 		// inportDataToTest();
-		//writeRow(TABLE,"row6","colfam1","qual1","3");
+	     for(int i=1 ;i<10 ;i++)
+	     {
+	    	 writeRow(TABLE,"row"+i,"colfam1","qual1","3");
+	     }
+		
 		//mergeRegionOnline();
 		//TestRegion();
-		scanRootOrMeta();
+		//scanRootOrMeta();
 	}
 
 	public static void createTable(String tablename, String[] cfs)
