@@ -277,5 +277,27 @@ public class ClientOp {
 		}
 		System.out.println("region counts:"+maps.size());
 	}
+	public static void scanRoot() throws IOException
+	{
+		Scan scan=new Scan();
+		//scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("regioninfo"));
+		scan.addFamily(Bytes.toBytes("info"));
+		HTable table=new HTable(conf, HConstants.ROOT_TABLE_NAME);
+		ResultScanner scanner= table.getScanner(scan);
+		try {
+			
+			for (Result result : scanner) {
+				System.out.println(result.toString());
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		finally
+		{
+			scanner.close();
+			table.close();
+		}
+	}
 
 }
