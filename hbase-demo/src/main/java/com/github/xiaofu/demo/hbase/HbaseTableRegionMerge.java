@@ -22,11 +22,11 @@ import org.apache.hadoop.hbase.util.Writables;
  * @author fulaihua
  *
  */
-public class FileUploaderMerge {
+public class HbaseTableRegionMerge {
 	public static Configuration conf = null;
 	private static HTable onlineTable;
 	private static HTable localTable;
-	public static String TABLE = "test_uploader";
+	public static String TABLE = "xkq_test";
 	static {
 		conf = HBaseConfiguration.create();
 		try {
