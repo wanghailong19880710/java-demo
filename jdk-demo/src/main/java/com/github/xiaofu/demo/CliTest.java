@@ -18,7 +18,7 @@ public class CliTest {
 		opts.addOption(op);
 		opts.addOption(op1);
 		 CommandLineParser parser = new GnuParser();
-		 CommandLine cmd = parser.parse(opts, new String[]{"-Dconf=23","-Dtest=5","-conf=2.xml","-conf=3.xml"}, true);
+		 CommandLine cmd = parser.parse(opts, new String[]{"-D conf=23","-D test=5","-conf=2.xml","-conf=3.xml"}, true);
 		 for (String item : cmd.getOptionValues("D")) {
 			System.out.println(item);
 		}
