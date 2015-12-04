@@ -465,7 +465,7 @@ public class Utils {
 		long seconds = (ms -  hour * hh - minutes * mi) / ss;
 		long milliSecond = ms -  hour * hh - minutes * mi - seconds * ss;
 		Calendar calendar=Calendar.getInstance();
-		calendar.set((int)year, (int)month, (int)day, hour, (int)minutes, (int)seconds);
+		calendar.set((int)year, (int)month-1, (int)day, hour, (int)minutes, (int)seconds);
 		calendar.set(Calendar.MILLISECOND, (int) milliSecond);
 		return calendar;
 		
