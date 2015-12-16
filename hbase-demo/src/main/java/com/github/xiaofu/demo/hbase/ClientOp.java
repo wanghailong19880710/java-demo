@@ -297,9 +297,9 @@ public class ClientOp {
 			for (Result result : scanner) {
 			   /*System.out.println((HRegionInfo) Writables.getWritable(
 					  result.getValue(HConstants.CATALOG_FAMILY, HConstants.REGIONINFO_QUALIFIER), new HRegionInfo()));*/
-				System.out.println(Bytes.toStringBinary( result.getValue(HConstants.CATALOG_FAMILY, HConstants.REGIONINFO_QUALIFIER)));
-				System.out.println(Bytes.toStringBinary( result.getValue(HConstants.CATALOG_FAMILY, HConstants.SERVER_QUALIFIER)));
-				System.out.println(Bytes.toStringBinary( result.getValue(HConstants.CATALOG_FAMILY, HConstants.STARTCODE_QUALIFIER)));
+				System.out.println(Bytes.toString( result.getValue(HConstants.CATALOG_FAMILY, HConstants.REGIONINFO_QUALIFIER)));
+				System.out.println(Bytes.toString( result.getValue(HConstants.CATALOG_FAMILY, HConstants.SERVER_QUALIFIER)));
+				System.out.println(Bytes.toString( result.getValue(HConstants.CATALOG_FAMILY, HConstants.STARTCODE_QUALIFIER)));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
