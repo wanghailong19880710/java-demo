@@ -285,8 +285,10 @@ public class ClientOp {
 	}
 	public static void scanRootOrMeta() throws IOException
 	{
+		 
 		Scan scan=new Scan();
 		//scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("regioninfo"));
+		scan.setCaching(1000);
 		scan.addFamily( HConstants.CATALOG_FAMILY);
 		HTable table=new HTable(conf, HConstants.ROOT_TABLE_NAME);
 		ResultScanner scanner= table.getScanner(scan);
@@ -295,7 +297,9 @@ public class ClientOp {
 			for (Result result : scanner) {
 			   /*System.out.println((HRegionInfo) Writables.getWritable(
 					  result.getValue(HConstants.CATALOG_FAMILY, HConstants.REGIONINFO_QUALIFIER), new HRegionInfo()));*/
-				System.out.println(result.toString());
+				System.out.println(Bytes.toStringBinary( result.getValue(HConstants.CATALOG_FAMILY, HConstants.REGIONINFO_QUALIFIER)));
+				System.out.println(Bytes.toStringBinary( result.getValue(HConstants.CATALOG_FAMILY, HConstants.SERVER_QUALIFIER)));
+				System.out.println(Bytes.toStringBinary( result.getValue(HConstants.CATALOG_FAMILY, HConstants.STARTCODE_QUALIFIER)));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
