@@ -295,8 +295,9 @@ public class ClientOp {
 		try {
 			
 			for (Result result : scanner) {
-			   System.out.println((HRegionInfo) Writables.getWritable(
-					  result.getValue(HConstants.CATALOG_FAMILY, HConstants.REGIONINFO_QUALIFIER), new HRegionInfo()));
+			  System.out.println(Bytes.toString(result.getRow()));
+			  /* System.out.println((HRegionInfo) Writables.getWritable(
+					  result.getValue(HConstants.CATALOG_FAMILY, HConstants.REGIONINFO_QUALIFIER), new HRegionInfo()));*/
 				
 			}
 		} catch (Exception e) {
