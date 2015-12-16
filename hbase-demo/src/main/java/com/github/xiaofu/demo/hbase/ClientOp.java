@@ -290,16 +290,14 @@ public class ClientOp {
 		//scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("regioninfo"));
 		scan.setCaching(1000);
 		scan.addFamily( HConstants.CATALOG_FAMILY);
-		HTable table=new HTable(conf, HConstants.ROOT_TABLE_NAME);
+		HTable table=new HTable(conf, HConstants.META_TABLE_NAME);
 		ResultScanner scanner= table.getScanner(scan);
 		try {
 			
 			for (Result result : scanner) {
-			   /*System.out.println((HRegionInfo) Writables.getWritable(
-					  result.getValue(HConstants.CATALOG_FAMILY, HConstants.REGIONINFO_QUALIFIER), new HRegionInfo()));*/
-				System.out.println(Bytes.toString( result.getValue(HConstants.CATALOG_FAMILY, HConstants.REGIONINFO_QUALIFIER)));
-				System.out.println(Bytes.toString( result.getValue(HConstants.CATALOG_FAMILY, HConstants.SERVER_QUALIFIER)));
-				System.out.println(Bytes.toString( result.getValue(HConstants.CATALOG_FAMILY, HConstants.STARTCODE_QUALIFIER)));
+			   System.out.println((HRegionInfo) Writables.getWritable(
+					  result.getValue(HConstants.CATALOG_FAMILY, HConstants.REGIONINFO_QUALIFIER), new HRegionInfo()));
+				
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
