@@ -72,20 +72,20 @@ public class ClientOp {
 	public static void main(String[] args) throws IOException {
 
 		// deleteRow(TABLE,"aa");
-	     createTable(TABLE, new String[] { "colfam1", "colfam2" });
+	    // createTable(TABLE, new String[] { "colfam1", "colfam2" });
 		// batchTest("test_flh");
 		//selectRow(TABLE, "row2");
 		// exportOnlineToLocal();
 		// System.out.println(idToMD5Hash("JG@1494"));
 		// inportDataToTest();
-	     for(int i=1 ;i<10 ;i++)
+	    /* for(int i=1 ;i<10 ;i++)
 	     {
 	    	 writeRow(TABLE,"row"+i,"colfam1","qual1","3");
-	     }
+	     }*/
 		
 		//mergeRegionOnline();
 		//TestRegion();
-		//scanRootOrMeta();
+		scanRootOrMeta();
 	}
 
 	public static void createTable(String tablename, String[] cfs)
@@ -288,13 +288,13 @@ public class ClientOp {
 		Scan scan=new Scan();
 		//scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("regioninfo"));
 		scan.addFamily( HConstants.CATALOG_FAMILY);
-		HTable table=new HTable(conf, HConstants.META_TABLE_NAME);
+		HTable table=new HTable(conf, HConstants.ROOT_TABLE_NAME);
 		ResultScanner scanner= table.getScanner(scan);
 		try {
 			
 			for (Result result : scanner) {
-			   System.out.println((HRegionInfo) Writables.getWritable(
-					  result.getValue(HConstants.CATALOG_FAMILY, HConstants.REGIONINFO_QUALIFIER), new HRegionInfo()));
+			   /*System.out.println((HRegionInfo) Writables.getWritable(
+					  result.getValue(HConstants.CATALOG_FAMILY, HConstants.REGIONINFO_QUALIFIER), new HRegionInfo()));*/
 				System.out.println(result.toString());
 			}
 		} catch (Exception e) {
