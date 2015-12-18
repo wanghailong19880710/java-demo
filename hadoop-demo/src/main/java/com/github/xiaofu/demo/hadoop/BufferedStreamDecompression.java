@@ -12,7 +12,7 @@ import org.apache.hadoop.io.compress.CompressionInputStream;
 import org.apache.hadoop.io.compress.CompressionOutputStream;
 import org.apache.hadoop.util.ReflectionUtils;
 /**
- * 对于压缩输入流使用缓存流与非缓存流的区别，在于实际得到的流的字节数大小
+ * 对于压缩输入流使用缓存流与非缓存流的区别，在于实际得到的流的字节数大小不同
  * @author fulaihua
  *
  */
@@ -33,6 +33,11 @@ public class BufferedStreamDecompression {
 				.newInstance(codecClass, conf);
 		return codec;
 	}
+	/**
+	 * 使用了缓冲流的，在数据时会一直读到指定的缓冲区大小才会返回
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	private static void decompressionInputWithBuffered() throws IOException, ClassNotFoundException
 	{
 		FileInputStream fileInputStream =new FileInputStream("test.zip");
@@ -44,7 +49,7 @@ public class BufferedStreamDecompression {
 		int realReadByteCounts=bufferedStream.read(bytes);
 		while(realReadByteCounts!=-1)
 		{
-			System.out.println("nobuffered read byte counts:"+realReadByteCounts);
+			System.out.println("buffered read byte counts:"+realReadByteCounts);
 			fileOutputStream.write(bytes, 0, realReadByteCounts);
 			realReadByteCounts=bufferedStream.read(bytes);
 		}
@@ -52,6 +57,11 @@ public class BufferedStreamDecompression {
 		fileOutputStream.close();
 		 
 	}
+	/**
+	 * 没有带缓冲流的方式读，它每次读的字节大小是不定的
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	private static void decompressionInputNoBuffered() throws IOException, ClassNotFoundException
 	{
 		FileInputStream fileInputStream =new FileInputStream("test.zip");
@@ -80,7 +90,7 @@ public class BufferedStreamDecompression {
 				.newInstance(codecClass, conf);
 		FileOutputStream fileOutputStream=new FileOutputStream("test.zip");
 		CompressionOutputStream out = codec.createOutputStream(fileOutputStream);
-		FileInputStream fileInputStream=new FileInputStream("ASP.NET 3.5 揭秘中文版(卷1).pdf");
+		FileInputStream fileInputStream=new FileInputStream("C#图解教程.pdf");
 		IOUtils.copyBytes(fileInputStream, out, 4096);
 		out.close();
 		fileInputStream.close();
