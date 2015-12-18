@@ -10,7 +10,11 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IOUtils;
 import org.apache.hadoop.io.compress.CompressionCodec;
 import org.apache.hadoop.io.compress.CompressionCodecFactory;
-
+/**
+ * 根据输入的扩展名来推断压缩编码
+ * @author fulaihua
+ *
+ */
 public class FileDecompressor
 {
 	public static void main(String[] args) throws Exception

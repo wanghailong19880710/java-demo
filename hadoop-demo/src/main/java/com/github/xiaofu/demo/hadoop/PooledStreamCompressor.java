@@ -7,7 +7,11 @@ import org.apache.hadoop.io.compress.CompressionCodec;
 import org.apache.hadoop.io.compress.CompressionOutputStream;
 import org.apache.hadoop.io.compress.Compressor;
 import org.apache.hadoop.util.ReflectionUtils;
-
+/**
+ * 使用压缩/解压缩器池来重用
+ * @author fulaihua
+ *
+ */
 public class PooledStreamCompressor
 {
 	public static void main(String[] args) throws Exception

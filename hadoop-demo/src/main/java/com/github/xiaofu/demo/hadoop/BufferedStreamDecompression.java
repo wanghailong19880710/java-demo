@@ -11,7 +11,11 @@ import org.apache.hadoop.io.compress.CompressionCodec;
 import org.apache.hadoop.io.compress.CompressionInputStream;
 import org.apache.hadoop.io.compress.CompressionOutputStream;
 import org.apache.hadoop.util.ReflectionUtils;
-
+/**
+ * 对于压缩输入流使用缓存流与非缓存流的区别，在于实际得到的流的字节数大小
+ * @author fulaihua
+ *
+ */
 public class BufferedStreamDecompression {
 	private static final int BUFFERED_SIZES=1024*1024*1;
 	public static void main(String[] args) throws ClassNotFoundException, IOException
