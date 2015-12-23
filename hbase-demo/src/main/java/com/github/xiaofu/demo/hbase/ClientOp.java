@@ -20,6 +20,7 @@ import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.KeyValue;
 import org.apache.hadoop.hbase.MasterNotRunningException;
 import org.apache.hadoop.hbase.ZooKeeperConnectionException;
+import org.apache.hadoop.hbase.catalog.MetaReader;
 import org.apache.hadoop.hbase.client.Delete;
 import org.apache.hadoop.hbase.client.Get;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
@@ -63,29 +64,48 @@ public class ClientOp {
 			e.printStackTrace();
 		}
 	}
-	
 
 	/**
 	 * @param args
 	 * @throws IOException
+	 * @throws InterruptedException
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException,
+			InterruptedException {
 
 		// deleteRow(TABLE,"aa");
-	    // createTable(TABLE, new String[] { "colfam1", "colfam2" });
+		// createTable(TABLE, new String[] { "colfam1" });
 		// batchTest("test_flh");
-		//selectRow(TABLE, "row2");
+		// selectRow(TABLE, "row2");
 		// exportOnlineToLocal();
 		// System.out.println(idToMD5Hash("JG@1494"));
 		// inportDataToTest();
-	    /* for(int i=1 ;i<10 ;i++)
-	     {
-	    	 writeRow(TABLE,"row"+i,"colfam1","qual1","3");
-	     }*/
-		
-		//mergeRegionOnline();
-		//TestRegion();
-		scanRootOrMeta();
+		/*
+		 * for(int i=1 ;i<10 ;i++) {
+		 * writeRow(TABLE,"row"+i,"colfam1","qual1","3"); }
+		 */
+
+		// mergeRegionOnline();
+		// TestRegion();
+		//scanRootOrMeta();
+		// split("test_flh");
+		assign("test_flh,,1450860289148.66d10102117f74347029dab830fde714.");
+		//scaner(TABLE);
+	}
+
+	public static void assign(String regionName)
+			throws MasterNotRunningException, ZooKeeperConnectionException,
+			IOException {
+		HBaseAdmin admin = new HBaseAdmin(conf);
+		admin.assign(Bytes.toBytes(regionName));
+
+	}
+
+	public static void split(String tableNameOrRegionName) throws IOException,
+			InterruptedException {
+		HBaseAdmin admin = new HBaseAdmin(conf);
+		admin.split(tableNameOrRegionName);
+		;
 	}
 
 	public static void createTable(String tablename, String[] cfs)
@@ -100,7 +120,7 @@ public class ClientOp {
 			}
 			SplitAlgorithm splitAlgor = new RegionSplitter.HexStringSplit();
 			admin.createTableWithAutoSplittableQualifier(tableDesc,
-					splitAlgor.split(5));
+					splitAlgor.split(2));
 			System.out.println("表创建成功！");
 		}
 	}
@@ -176,10 +196,10 @@ public class ClientOp {
 				KeyValue[] kv = r.raw();
 				for (int i = 0; i < kv.length; i++) {
 
-					System.out.print(new String(kv[i].getRow()) + "");
+					System.out.print(new String(kv[i].getRow()) + " ");
 					System.out.print(new String(kv[i].getFamily()) + ":");
 					System.out.print(new String(kv[i].getQualifier()) + "");
-					System.out.print(kv[i].getTimestamp() + "");
+					System.out.print(kv[i].getTimestamp() + " ");
 					System.out.println(new String(kv[i].getValue()));
 				}
 			}
@@ -228,7 +248,7 @@ public class ClientOp {
 			put.setWriteToWAL(false);
 
 			put.add(Bytes.toBytes("colfam1"), Bytes.toBytes("aa"),
-					Bytes.toBytes("1"));
+					Bytes.toBytes(i + ""));
 			lists.add(put);
 		}
 		localTable.setAutoFlush(false);
@@ -271,41 +291,44 @@ public class ClientOp {
 		}
 	}
 
- 
-	
 	@SuppressWarnings("deprecation")
-	public static void TestRegion() throws IOException
-	{
-		Map<HRegionInfo, HServerAddress>  maps=	localTable.getRegionsInfo();
-		for (Map.Entry<HRegionInfo,HServerAddress> item : maps.entrySet()) {
+	public static void TestRegion() throws IOException {
+		Map<HRegionInfo, HServerAddress> maps = localTable.getRegionsInfo();
+		for (Map.Entry<HRegionInfo, HServerAddress> item : maps.entrySet()) {
 			System.out.println(item.getKey().getRegionNameAsString());
-			
+
 		}
-		System.out.println("region counts:"+maps.size());
+		System.out.println("region counts:" + maps.size());
 	}
-	public static void scanRootOrMeta() throws IOException
-	{
-		 
-		Scan scan=new Scan();
-		//scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("regioninfo"));
+
+	public static void scanRootOrMeta() throws IOException {
+		;
+		Scan scan = MetaReader.getScanForTableName(Bytes.toBytes("test_flh"));
+		// scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("regioninfo"));
 		scan.setCaching(1000);
 		scan.addFamily( HConstants.CATALOG_FAMILY);
-		HTable table=new HTable(conf, HConstants.META_TABLE_NAME);
-		ResultScanner scanner= table.getScanner(scan);
+		/*scan.addColumn(HConstants.CATALOG_FAMILY,
+				HConstants.REGIONINFO_QUALIFIER);
+		scan.addColumn(HConstants.CATALOG_FAMILY, HConstants.SERVER_QUALIFIER);*/
+		HTable table = new HTable(conf, HConstants.META_TABLE_NAME);
+		ResultScanner scanner = table.getScanner(scan);
 		try {
-			
+
 			for (Result result : scanner) {
-			  System.out.println(Bytes.toString(result.getRow()));
-			  /* System.out.println((HRegionInfo) Writables.getWritable(
-					  result.getValue(HConstants.CATALOG_FAMILY, HConstants.REGIONINFO_QUALIFIER), new HRegionInfo()));*/
-				
+				System.out.println(MetaReader
+						.getServerNameFromCatalogResult(result));
+				//System.out.println(Bytes.toString(result.getRow()));
+				/*
+				 * System.out.println((HRegionInfo) Writables.getWritable(
+				 * result.getValue(HConstants.CATALOG_FAMILY,
+				 * HConstants.REGIONINFO_QUALIFIER), new HRegionInfo()));
+				 */
+
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
-		}
-		finally
-		{
+		} finally {
 			scanner.close();
 			table.close();
 		}
