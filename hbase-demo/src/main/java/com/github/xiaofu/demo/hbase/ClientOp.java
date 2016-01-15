@@ -19,6 +19,7 @@ import org.apache.hadoop.hbase.HServerAddress;
 import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.KeyValue;
 import org.apache.hadoop.hbase.MasterNotRunningException;
+import org.apache.hadoop.hbase.TableNotFoundException;
 import org.apache.hadoop.hbase.ZooKeeperConnectionException;
 import org.apache.hadoop.hbase.catalog.MetaReader;
 import org.apache.hadoop.hbase.client.Delete;
@@ -87,10 +88,22 @@ public class ClientOp {
 
 		// mergeRegionOnline();
 		// TestRegion();
-		//scanRootOrMeta();
+		// scanRootOrMeta();
 		// split("test_flh");
-		assign("test_flh,,1450860289148.66d10102117f74347029dab830fde714.");
-		//scaner(TABLE);
+		//assign("test_flh,,1450860289148.66d10102117f74347029dab830fde714.");
+		// scaner(TABLE);
+		printTableMetadata("user_behavior_info");
+	}
+
+	public static void printTableMetadata(String tableName)
+			throws TableNotFoundException, IOException {
+		HBaseAdmin admin = new HBaseAdmin(conf);
+		HTableDescriptor desc = admin.getTableDescriptor(Bytes
+				.toBytes(tableName));
+		/*for (HColumnDescriptor columnDesc : desc.getColumnFamilies()) {
+			System.out.println("columnDesc:"+columnDesc.toString());
+		}*/
+		System.out.println("desc:"+desc.toString());
 	}
 
 	public static void assign(String regionName)
@@ -98,7 +111,6 @@ public class ClientOp {
 			IOException {
 		HBaseAdmin admin = new HBaseAdmin(conf);
 		admin.assign(Bytes.toBytes(regionName));
-
 	}
 
 	public static void split(String tableNameOrRegionName) throws IOException,
@@ -306,10 +318,13 @@ public class ClientOp {
 		Scan scan = MetaReader.getScanForTableName(Bytes.toBytes("test_flh"));
 		// scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("regioninfo"));
 		scan.setCaching(1000);
-		scan.addFamily( HConstants.CATALOG_FAMILY);
-		/*scan.addColumn(HConstants.CATALOG_FAMILY,
-				HConstants.REGIONINFO_QUALIFIER);
-		scan.addColumn(HConstants.CATALOG_FAMILY, HConstants.SERVER_QUALIFIER);*/
+		scan.addFamily(HConstants.CATALOG_FAMILY);
+		/*
+		 * scan.addColumn(HConstants.CATALOG_FAMILY,
+		 * HConstants.REGIONINFO_QUALIFIER);
+		 * scan.addColumn(HConstants.CATALOG_FAMILY,
+		 * HConstants.SERVER_QUALIFIER);
+		 */
 		HTable table = new HTable(conf, HConstants.META_TABLE_NAME);
 		ResultScanner scanner = table.getScanner(scan);
 		try {
@@ -317,7 +332,7 @@ public class ClientOp {
 			for (Result result : scanner) {
 				System.out.println(MetaReader
 						.getServerNameFromCatalogResult(result));
-				//System.out.println(Bytes.toString(result.getRow()));
+				// System.out.println(Bytes.toString(result.getRow()));
 				/*
 				 * System.out.println((HRegionInfo) Writables.getWritable(
 				 * result.getValue(HConstants.CATALOG_FAMILY,
