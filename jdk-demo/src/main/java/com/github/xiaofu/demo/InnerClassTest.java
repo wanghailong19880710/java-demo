@@ -23,10 +23,11 @@ public class InnerClassTest {
 		for (int i = 0; i < 10; i++) {
 			tests[i]=test.start(i);
 		}
-		for (ITest iTest : tests) {
-			iTest.doIt();	 
-		
+		for (int i = 0; i < 10; i++) {
+			tests[i].doIt();
+			tests[i]=null;//会被垃圾回收？它的回收机制又是什么？
 		}
+		 
 		Thread.currentThread().join();
 	}
 
