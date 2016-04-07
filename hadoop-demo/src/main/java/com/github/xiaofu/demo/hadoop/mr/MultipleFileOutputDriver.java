@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.regex.Pattern;
 
 import org.apache.hadoop.conf.Configured;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
@@ -78,10 +79,9 @@ public class MultipleFileOutputDriver extends Configured implements Tool {
 		Job job = Job.getInstance(getConf());
 		job.setJobName(this.getClass().getSimpleName());
 		job.setJarByClass(this.getClass());
-		job.setJar("E:\\open-source-projects\\github\\java-demo-parent\\hadoop-demo\\target\\hadoop-demo-0.0.1-SNAPSHOT.jar");
+		job.setJar("d:\\open-source-projects\\github\\java-demo-parent\\hadoop-demo\\target\\hadoop-demo-0.0.1-SNAPSHOT.jar");
 		job.setMapperClass(DemoMapper.class);
 		job.setReducerClass(DemoReducer.class);
-
 		job.setMapOutputKeyClass(Text.class);
 		job.setMapOutputValueClass(Text.class);
 		job.getConfiguration().set(MRJobConfig.MAP_JAVA_OPTS, "-Xmx4096m");
@@ -101,7 +101,8 @@ public class MultipleFileOutputDriver extends Configured implements Tool {
 				NullWritable.class, Text.class);
 		MultipleOutputs.addNamedOutput(job, "test2", TextOutputFormat.class,
 				NullWritable.class, Text.class);
-
+		FileSystem fs=FileSystem.get(job.getConfiguration());
+		fs.delete(new Path("/data"), true);
 		job.waitForCompletion(true);
 
 		return 0;
