@@ -7,7 +7,6 @@
 		<name>yarn.app.mapreduce.am.staging-dir</name>
 		<value>/yarn</value>
 	</property>
-
 	<property>
 		<name>mapreduce.jobhistory.recovery.enable</name>
 		<value>true</value>
@@ -41,12 +40,15 @@
 		<name>mapred.child.env</name>
 		<value>LD_LIBRARY_PATH=/usr/local/vipcloud/hadoop/lib/native</value>
 	</property>
-
- 
 	<property>
 		<name>mapred.remote.os</name>
 		<value>Linux</value>
 		<description>Remote MapReduce framework's OS, can be either Linux or
-			Windows</description>
+			Windows
+		</description>
+	</property>
+	<property>
+		<name>mapreduce.jobhistory.webapp.address</name>
+		<value>vdatanode2:19888</value>
 	</property>
 </configuration>
