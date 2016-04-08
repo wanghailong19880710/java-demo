@@ -22,12 +22,7 @@
 			<resource>
 				<directory>${project.basedir}/src/main/resources</directory>
 				<filtering>true</filtering>
-				<excludes>
-					<exclude>**/yarn-site.xml</exclude>
-					<exclude>**/core-site.xml</exclude>
-					<exclude>**/hdfs-site.xml</exclude>
-					<exclude>**/*.xml</exclude>
-				</excludes>
+				
 			</resource>
 
 		</resources>
