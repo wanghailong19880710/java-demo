@@ -52,8 +52,8 @@
 		<name>mapreduce.jobhistory.webapp.address</name>
 		<value>vdatanode2:19888</value>
 	</property>
-	<propery>
+	<property>
 		<name>mapreduce.jobhistory.address</name>
 		<value>vdatanode2:10020</value>
-	</propery>
+	</property>
 </configuration>
