@@ -162,11 +162,9 @@
 		<name>yarn.resourcemanager.system-metrics-publisher.enabled</name>
 		<value>true</value>
 	</property>
-
-
-	<property>
-		<name>cqvip.yarn.submit.users</name>
-		<value>vipcloud,root</value>
-	</property>
+ <property>
+ 	<name>yarn.resourcemanager.max-completed-applications</name>
+ 	<value>5000</value>
+ </property>
 
 </configuration>
