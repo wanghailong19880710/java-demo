@@ -48,29 +48,71 @@
 		<module>thrift-demo</module>
 		<module>dbcp-demo</module>
 	</modules>
-
-	<repositories>
-		 
+<repositories>
 		<repository>
-			<id>cdh.repo</id>
-			<url>https://repository.cloudera.com/artifactory/cloudera-repos</url>
-			<name>Cloudera Repositories</name>
+			<id>cdh.rcs.releases.repo</id>
+			<url>https://repository.cloudera.com/content/groups/cdh-releases-rcs</url>
+			<name>CDH Releases Repository</name>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>cdh.releases.repo</id>
+			<url>https://repository.cloudera.com/content/repositories/releases</url>
+			<name>CDH Releases Repository</name>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
 		<repository>
 			<id>cdh.snapshots.repo</id>
-			<url>https://repository.cloudera.com/artifactory/libs-snapshot-local</url>
-			<name>Cloudera Snapshots Repository</name>
+			<url>https://repository.cloudera.com/content/repositories/snapshots</url>
+			<name>CDH Snapshots Repository</name>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
-			<releases>
+		</repository>
+		<repository>
+			<id>cloudera.thirdparty.repo</id>
+			<url>https://repository.cloudera.com/content/repositories/third-party</url>
+			<name>Cloudera Third Party Repository</name>
+			<snapshots>
 				<enabled>false</enabled>
-			</releases>
+			</snapshots>
 		</repository>
 	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>cloudera.thirdparty.repo</id>
+			<url>https://repository.cloudera.com/content/repositories/third-party</url>
+			<name>Cloudera Third Party Repository</name>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>cloudera.snapshot.repo</id>
+			<url>https://repository.cloudera.com/content/repositories/snapshots</url>
+			<name>Cloudera Snapshot Repository</name>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+
+		<pluginRepository>
+			<id>dtrott</id>
+			<url>http://maven.davidtrott.com/repository</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+	 
 	<dependencyManagement>
 		<dependencies>
 			<!-- test -->
