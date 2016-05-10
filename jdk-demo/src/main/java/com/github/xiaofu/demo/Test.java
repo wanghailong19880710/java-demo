@@ -1,13 +1,19 @@
 package com.github.xiaofu.demo;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -16,9 +22,17 @@ import org.codehaus.jackson.node.ObjectNode;
 
 public class Test {
 	public static void main(String[] args) throws JsonProcessingException, IOException {
-		jsonTest();
-//		System.out.println(MDCodingHour("www.cqvip.com"));
-//		System.out.println(newMDCodingHour("www.cqvip.com"));
+		 File file=new File("d:/t1.txt");
+		 BufferedReader reader=new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+		 String 	 line =reader.readLine();
+		 List<String> lists=new ArrayList<String>();
+		 while(line!=null)
+		 {
+			 lists.add(line.toLowerCase());
+			 line =reader.readLine();
+		
+		 }
+		System.out.println( StringUtils.join(lists, ","));
 	}
 
 	public static String newMDCodingHour(String tmp) {
