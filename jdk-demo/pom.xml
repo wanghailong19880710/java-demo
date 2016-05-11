@@ -7,6 +7,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
+
 	<artifactId>jdk-demo</artifactId>
 	<dependencies>
 		<dependency>
@@ -51,7 +52,11 @@
 			<artifactId>commons-configuration</artifactId>
 			<version>1.6</version>
 		</dependency>
-		 
+		<dependency>
+			<groupId>com.googlecode.aviator</groupId>
+			<artifactId>aviator</artifactId>
+			<version>2.3.3</version>
+		</dependency>
 
 	</dependencies>
 	<build>
@@ -93,5 +98,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		
 	</build>
 </project>
