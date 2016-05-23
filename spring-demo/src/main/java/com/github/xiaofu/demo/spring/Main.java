@@ -16,7 +16,9 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
-		context.getBean(IService.class).test();
+		Entity t=new Entity();
+		t.setT1("abc");
+		context.getBean(IService.class).test(t);
 		 
 	}
 

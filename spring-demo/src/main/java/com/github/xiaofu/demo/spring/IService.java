@@ -1,5 +1,5 @@
 package com.github.xiaofu.demo.spring;
 
 public interface IService {
-	void test();
+	void test(Entity entity );
 }
