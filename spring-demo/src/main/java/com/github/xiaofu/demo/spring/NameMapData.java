@@ -5,12 +5,12 @@ import org.springframework.stereotype.Repository;
 
 @Scope("prototype")
 @Repository("mapDataName")
-public class NameMapData implements IMapData {
+public class NameMapData implements IMapData<Entity> {
 
 	@Override
-	public String get() {
+	public String get(Entity a) {
 		 
-		return "mapDataName";
+		return a.getT1();
 	}
 
 }
