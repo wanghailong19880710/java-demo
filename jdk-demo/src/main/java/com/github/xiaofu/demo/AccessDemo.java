@@ -34,6 +34,8 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 import com.healthmarketscience.jackcess.Database.FileFormat;
 
 import net.ucanaccess.jdbc.UcanaccessDriver;
@@ -49,7 +51,7 @@ public class AccessDemo {
 	{
 		
 			Set<String> qkFields= new LinkedHashSet<String>();
-			Collections.addAll(qkFields,StringUtils.split("lngid,titletype,mediaid,media_c,media_e,years,vol,num,volumn,specialnum,subjectnum,gch,title_c,title_e,keyword_c,keyword_e,remark_c,remark_e,class,beginpage,endpage,jumppage,pagecount,showwriter,showorgan,imburse,author_e,medias_qk,refercount,referids,intpdf,isqwkz,intgby,isinclude,range,fstorgan,fstwriter,muinfo,language,issn,type",","));
+			Collections.addAll(qkFields,StringUtils.split("lngid,media_c,media_e,years,vol,num,title_c,title_e,keyword_c,keyword_e,remark_c,remark_e,class,beginpage,endpage,jumppage,imburse,showwriter,showorgan,author_e,url",","));
 			typeFields.put("1",qkFields);
 			Set<String> xwFields=new  LinkedHashSet<String>();
 			Collections.addAll(xwFields,StringUtils.split("lngid,title_c,title_e,bstitlename_pair,showwriter,author_e,bssubjectcode,bsspeciality,bsdegree,showorgan,bstutorsname,years,bsstudydirection,language,class,class,keyword_c,bsmarkskeywords,keyword_e,remark_c,remark_e,bsdigestlanguages,imburse,strreftext,bsdatabsename,pagecount,bsthesissize,bscontributionpeople,bscontributiontime,fulltextaddress,netfulltextaddr,type",","));
@@ -76,14 +78,16 @@ public class AccessDemo {
 		Connection ucanaccessConnection = getConn(mdbFile);
 		ucanaccessConnection.setAutoCommit(false);
 		Statement statement = ucanaccessConnection.createStatement() ;
-		 File file=new File("d:/_user_flh_HYDXDataExport_4109-r-00000");
+		 File file=new File("d:/_user_flh_GenericExportData_part-r-00000");
 		 BufferedReader reader=new BufferedReader(new InputStreamReader(new FileInputStream(file)));
 		 String  line =reader.readLine();
+		 String type="1";
+		     Splitter SPLITTER = Splitter.onPattern(Pattern.quote("|"));
 		 while(line!=null)
 		 {
 			 line = line.replace("'", "''");
-			 String[] fieldValues=line.split(Pattern.quote("|") );
-			 String type=fieldValues[fieldValues.length-1];
+			 String[] fieldValues=Iterables.toArray( SPLITTER.split(line),String.class);
+			// String type=fieldValues[fieldValues.length-1];
 			 StringBuilder builderTotal=new StringBuilder();
 			 builderTotal.append("insert into table_"+type+"(");
 			 builderTotal.append(StringUtils.join(typeFields.get(type), ","));
