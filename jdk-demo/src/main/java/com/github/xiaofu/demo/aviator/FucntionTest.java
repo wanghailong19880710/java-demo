@@ -16,7 +16,7 @@ public class FucntionTest {
 	static class SplitContains extends AbstractFunction {
 
 		@Override
-		public AviatorObject call(Map<String, Object> env, AviatorObject args1,
+		public AviatorBoolean call(Map<String, Object> env, AviatorObject args1,
 				AviatorObject args2, AviatorObject args3, AviatorObject args4) {
 
 			String fieldName = (String) args1.getValue(env);
@@ -56,7 +56,7 @@ public class FucntionTest {
 	static class SplitStartsWith extends AbstractFunction {
 
 		@Override
-		public AviatorObject call(Map<String, Object> env, AviatorObject args1,
+		public AviatorBoolean call(Map<String, Object> env, AviatorObject args1,
 				AviatorObject args2, AviatorObject args3, AviatorObject args4) {
 
 			String fieldName = (String) args1.getValue(env);
@@ -96,7 +96,7 @@ public class FucntionTest {
 	static class SplitEquals extends AbstractFunction {
 
 		@Override
-		public AviatorObject call(Map<String, Object> env, AviatorObject args1,
+		public AviatorBoolean call(Map<String, Object> env, AviatorObject args1,
 				AviatorObject args2, AviatorObject args3, AviatorObject args4) {
 
 			String fieldName = (String) args1.getValue(env);
@@ -136,17 +136,20 @@ public class FucntionTest {
 	}
 
 	public static void main(String[] args) {
-		String aa = " splitEquals('classids_s',';','123;567',';') ";
-		
+		String aa = " xxxobj.type=='1'   && splitStartsWith('class',' ','F8','')";
+	
 		AviatorEvaluator.addFunction(new SplitEquals());
 		AviatorEvaluator.addFunction(new SplitContains());
 		AviatorEvaluator.addFunction(new SplitStartsWith());
-		
-		Expression express = AviatorEvaluator.compile(aa, true);
+		 
+		Expression express = AviatorEvaluator.compile(aa,true);
+	
 		Map<String, Object> env = new HashMap<String, Object>();
 		Map<String, Object> obj = new HashMap<String, Object>();
-		obj.put("classids_s", "123;234");
+		obj.put("class", "F8");
+		obj.put("type", '1');
 		env.put("xxxobj", obj);
+		
 	   System.out.println(express.execute(env));
 	   //System.out.println(env.get("output"));
 	}
