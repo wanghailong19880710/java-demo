@@ -34,6 +34,8 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 import com.healthmarketscience.jackcess.Database.FileFormat;
 
 import net.ucanaccess.jdbc.UcanaccessDriver;
@@ -45,15 +47,16 @@ import net.ucanaccess.jdbc.UcanaccessDriver;
 public class AccessDemo {
 	static Map<String,Set<String>> typeFields=new HashMap<String,Set<String>>();
 	static Map<String,BufferedWriter> writerMaps=new  HashMap<String,BufferedWriter>();
+	static String mdbFileName =  "export.mdb";
 	private static void init()
 	{
 		
 			Set<String> qkFields= new LinkedHashSet<String>();
 			Collections.addAll(qkFields,StringUtils.split("lngid,titletype,mediaid,media_c,media_e,years,vol,num,volumn,specialnum,subjectnum,gch,title_c,title_e,keyword_c,keyword_e,remark_c,remark_e,class,beginpage,endpage,jumppage,pagecount,showwriter,showorgan,imburse,author_e,medias_qk,refercount,referids,intpdf,isqwkz,intgby,isinclude,range,fstorgan,fstwriter,muinfo,language,issn,type",","));
 			typeFields.put("1",qkFields);
-			Set<String> xwFields=new  LinkedHashSet<String>();
-			Collections.addAll(xwFields,StringUtils.split("lngid,title_c,title_e,bstitlename_pair,showwriter,author_e,bssubjectcode,bsspeciality,bsdegree,showorgan,bstutorsname,years,bsstudydirection,language,class,class,keyword_c,bsmarkskeywords,keyword_e,remark_c,remark_e,bsdigestlanguages,imburse,strreftext,bsdatabsename,pagecount,bsthesissize,bscontributionpeople,bscontributiontime,fulltextaddress,netfulltextaddr,type",","));
-			typeFields.put("2",xwFields);
+	/*		Set<String> xwFields=new  LinkedHashSet<String>();
+			Collections.addAll(xwFields,StringUtils.split("lngid,title_c,title_e,bstitlename_pair,showwriter,author_e,bssubjectcode,bsspeciality,bsdegree,showorgan,bstutorsname,years,bsstudydirection,language,class,class,keyword_c,bsmarkskeywords,keyword_e,remark_c,remark_e,bsdigestlanguages,imburse,strreftext,bsdatabsename,pagecount,bsthesissize,bscontributionpeople,bscontributiontime,fulltextaddress,netfulltextaddr,type",","));*/
+		/*	typeFields.put("2",xwFields);
 			Set<String> hyFields=new  LinkedHashSet<String>();
 			Collections.addAll(hyFields,StringUtils.split("lngid,title_c,title_e,years,hymeetingrecordname,hyenmeetingrecordname,showwriter,author_e,showorgan,media_c,media_e,hymeetingdate,hymeetingplace,num,hyhostorganization,hypressorganization,hypressdate,hypressplace,hysocietyname,hychiefeditor,beginpage,endpage,jumppage,class,keyword_c,keyword_e,remark_c,remark_e,imburse,pagecount,hythesissize,language,strreftext,fulltextpath,netfulltextaddr,type",","));
 			typeFields.put("3",hyFields);
@@ -65,25 +68,29 @@ public class AccessDemo {
 			typeFields.put("5",bzFields);
 			Set<String> cgFields=new  LinkedHashSet<String>();
 			Collections.addAll(cgFields,StringUtils.split("lngid,title_c,cgitemnumber,years,cglimituse,cgprovinces,class,cgcgtypes,keyword_c,remark_c,cgprojectname,cgappunit,cgappdate,cgawards,cgdecunit,cgdecdate,cgrecomunit,cgrecomdate,cgrecomnum,cgrecomcode,cgregunit,media_c,cgregdate,cgplanname,cgplandate,cgprocesstimes,showorgan,showwriter,cgindustry,cginduscode,cgpatents,cgpatentnum,cgpatentsauthno,cgtransnotes,cgtransrange,cgtranscond,cgtranscontent,cgtransmode,cgtranscost,cginvestment,cgbuildtimes,cginvestexplain,cgoutputvalue,cgtaxes,cgforeiexch,cgsavemoney,cgpromoteways,cgpromoterange,cgpromotetrack,cgpromoteexp,cgcontactunit,cgcontactaddr,cgcontacted,cgcontactphone,cgcontactfax,cgzipcode,cgcontactemail,netfulltextaddr,fulltextaddress,type",","));
-			typeFields.put("6",cgFields);
+			typeFields.put("6",cgFields);*/
 	}
 
 	private static void importData() throws IOException, SQLException, ClassNotFoundException
 	{
 		 init();
-		String mdbFileName =  "hydx.mdb";
-		File mdbFile = new File("/tmp/hydx/", mdbFileName);
+		 int mdbCounts=1;
+		File mdbFile = new File("/tmp/hydx/", mdbCounts+"_"+mdbFileName);
 		Connection ucanaccessConnection = getConn(mdbFile);
-		ucanaccessConnection.setAutoCommit(false);
+		//ucanaccessConnection.setAutoCommit(false);
 		Statement statement = ucanaccessConnection.createStatement() ;
-		 File file=new File("d:/_user_flh_HYDXDataExport_4109-r-00000");
+		 File file=new File("d:/data");
 		 BufferedReader reader=new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+		 int counts=1;
+	
 		 String  line =reader.readLine();
+		 String type="1";
+		     Splitter SPLITTER = Splitter.onPattern(Pattern.quote("|"));
 		 while(line!=null)
 		 {
 			 line = line.replace("'", "''");
-			 String[] fieldValues=line.split(Pattern.quote("|") );
-			 String type=fieldValues[fieldValues.length-1];
+			 String[] fieldValues=Iterables.toArray( SPLITTER.split(line),String.class);
+			// String type=fieldValues[fieldValues.length-1];
 			 StringBuilder builderTotal=new StringBuilder();
 			 builderTotal.append("insert into table_"+type+"(");
 			 builderTotal.append(StringUtils.join(typeFields.get(type), ","));
@@ -101,15 +108,30 @@ public class AccessDemo {
 			  }
 			 builderTotal.append(builder);
 			 builderTotal.append(")");
-			// System.out.println(builderTotal);
+
+			 //statement.addBatch(builderTotal.toString());
 			 statement.execute(builderTotal.toString());
+			 if(counts>=200000)
+			 {
+				// statement.executeBatch();
+				// statement.clearBatch();
+				//ucanaccessConnection.commit();
+				ucanaccessConnection.close();
+				 mdbCounts++;
+				 mdbFile = new File("/tmp/hydx/", mdbCounts+"_"+mdbFileName);
+				ucanaccessConnection = getConn(mdbFile);
+				//ucanaccessConnection.setAutoCommit(false);
+				 statement = ucanaccessConnection.createStatement() ;
+				counts=0;
+			 }
 			 line =reader.readLine();
+			 counts++;
 		 }
 		 /*for (Writer writer : writerMaps.values()) {
 			 writer.close();
 		}*/
 		 reader.close();
-			ucanaccessConnection.commit();
+		ucanaccessConnection.commit();
 		ucanaccessConnection.close();
 	}
 	private static BufferedWriter getWriter(String fileName) throws FileNotFoundException
@@ -134,7 +156,7 @@ public class AccessDemo {
 	}
 	private static void createTable() throws ClassNotFoundException, SQLException
 	{
-		String mdbFileName =  "hydx.mdb";
+	
 		File mdbFile = new File("/tmp/hydx/", mdbFileName);
 		Connection ucanaccessConnection = getConn(mdbFile);
 		ucanaccessConnection.setAutoCommit(false);
@@ -169,7 +191,7 @@ public class AccessDemo {
 	 */
 	public static void main(String[] args) throws SQLException, ClassNotFoundException, IOException {
 		//createTable();
-	   importData();
+	    importData();
 	}
 
 }

@@ -3,8 +3,17 @@
  */
 package com.github.xiaofu.demo.hbase;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -73,9 +82,9 @@ public class ClientOp {
 	 */
 	public static void main(String[] args) throws IOException,
 			InterruptedException {
-
+		 //deleteTable(TABLE);
 		// deleteRow(TABLE,"aa");
-		// createTable(TABLE, new String[] { "colfam1" });
+		 //createTable(TABLE, new String[] { "colfam1" });
 		// batchTest("test_flh");
 		// selectRow(TABLE, "row2");
 		// exportOnlineToLocal();
@@ -90,9 +99,75 @@ public class ClientOp {
 		// TestRegion();
 		// scanRootOrMeta();
 		// split("test_flh");
-		//assign("test_flh,,1450860289148.66d10102117f74347029dab830fde714.");
+		// assign("test_flh,,1450860289148.66d10102117f74347029dab830fde714.");
 		// scaner(TABLE);
-		printTableMetadata("user_behavior_info");
+		//printTableMetadata("user_recommendation_info");
+		// deleteRowsForJCZ();
+		//oneRowMultipleCols(TABLE);
+		//move("5e30225f17d3723528cb65d07face13d" ,"node205.vipcloud,60020,1461580533463");
+		compact("user_recommendation_info");
+		//System.out.println(new HRegionInfo(Bytes.toBytes("user_test"),"aaaaaa".getBytes(),"cccccc".getBytes()).getRegionNameAsString());
+	}
+
+	static void oneRowMultipleCols(String tableName) throws IOException {
+		HTable table = new HTable(conf, tableName);
+		byte[] ROW1 = Bytes.toBytes("row1");
+		// byte[] ROW2 = Bytes.toBytes("row2");
+		byte[] COLFAM1 = Bytes.toBytes("colfam1");
+		DateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+		byte[] QUAL1 = Bytes.toBytes("2015-01-02");
+		byte[] QUAL2 = Bytes.toBytes("2015-08-02");
+		byte[] QUAL3 = Bytes.toBytes("2015-11-01");
+		byte[] QUAL4 = Bytes.toBytes("2015-12-12");
+		List<Row> batch = new ArrayList<Row>();
+		Put put1 = new Put(ROW1);
+		Calendar date3 = Calendar.getInstance();
+		date3.clear();
+		date3.set(2015, 10, 01, 0, 0, 0);
+		Calendar date4 = Calendar.getInstance();
+		date4.clear();
+		date4.set(2015, 11, 12, 0, 0, 0);
+		put1.add(COLFAM1, Bytes.toBytes(date3.getTimeInMillis()),
+				Bytes.toBytes(format.format(date3.getTime())));
+		put1.add(COLFAM1, Bytes.toBytes(date4.getTimeInMillis()),
+				Bytes.toBytes(format.format(date4.getTime())));
+		batch.add(put1);
+		Put put2 = new Put(ROW1);
+		Calendar date1 = Calendar.getInstance();
+		date1.clear();
+		date1.set(2015, 0, 02, 0, 0, 0);
+		Calendar date2 = Calendar.getInstance();
+		date2.clear();
+		date2.set(2015, 07, 02, 0, 0, 0);
+		put2.add(COLFAM1, Bytes.toBytes( date1.getTimeInMillis()),
+				Bytes.toBytes(format.format(date1.getTime())));
+		put2.add(COLFAM1, Bytes.toBytes( date2.getTimeInMillis()),
+				Bytes.toBytes(format.format(date2.getTime())));
+		batch.add(put2);
+
+		try {
+			table.batch(batch);
+		} catch (Exception e) {
+			System.err.println("Error: " + e);
+		}
+		scaner(tableName);
+
+	}
+
+	public static void deleteRowsForJCZ() throws IOException {
+
+		/*
+		 * File file=new File("D:\\VIP\\test"); List<Delete> lists=new
+		 * ArrayList<Delete>(); BufferedReader reader=new BufferedReader(new
+		 * InputStreamReader(new FileInputStream(file))); String
+		 * line=reader.readLine(); while(line!=null) { lists.add(new
+		 * Delete(Bytes.toBytes(idToMD5Hash(line)))); line=reader.readLine(); }
+		 */
+
+		Delete del1 = new Delete(Bytes.toBytes(idToMD5Hash("27109402")));
+
+		localTable.delete(del1);
+
 	}
 
 	public static void printTableMetadata(String tableName)
@@ -100,10 +175,11 @@ public class ClientOp {
 		HBaseAdmin admin = new HBaseAdmin(conf);
 		HTableDescriptor desc = admin.getTableDescriptor(Bytes
 				.toBytes(tableName));
-		/*for (HColumnDescriptor columnDesc : desc.getColumnFamilies()) {
-			System.out.println("columnDesc:"+columnDesc.toString());
-		}*/
-		System.out.println("desc:"+desc.toString());
+		/*
+		 * for (HColumnDescriptor columnDesc : desc.getColumnFamilies()) {
+		 * System.out.println("columnDesc:"+columnDesc.toString()); }
+		 */
+		System.out.println("desc:" + desc.toString());
 	}
 
 	public static void assign(String regionName)
@@ -112,12 +188,24 @@ public class ClientOp {
 		HBaseAdmin admin = new HBaseAdmin(conf);
 		admin.assign(Bytes.toBytes(regionName));
 	}
-
+	public static void  move(String encodedRegionName,String serverName) throws IOException, InterruptedException
+	{
+		HBaseAdmin admin = new HBaseAdmin(conf);
+		admin.move(Bytes.toBytes(encodedRegionName), Bytes.toBytes(serverName));
+		 
+	}
+	public static void  compact(String tableNameOrRegionName) throws IOException, InterruptedException
+	{
+		HBaseAdmin admin = new HBaseAdmin(conf);
+		admin.compact(tableNameOrRegionName);
+		admin.close();
+		 
+	}
 	public static void split(String tableNameOrRegionName) throws IOException,
 			InterruptedException {
 		HBaseAdmin admin = new HBaseAdmin(conf);
 		admin.split(tableNameOrRegionName);
-		;
+		admin.close();
 	}
 
 	public static void createTable(String tablename, String[] cfs)
@@ -201,7 +289,7 @@ public class ClientOp {
 		try {
 			HTable table = new HTable(conf, tablename);
 			Scan s = new Scan();
-
+		 
 			ResultScanner rs = table.getScanner(s);
 
 			for (Result r : rs) {
@@ -209,10 +297,10 @@ public class ClientOp {
 				for (int i = 0; i < kv.length; i++) {
 
 					System.out.print(new String(kv[i].getRow()) + " ");
-					System.out.print(new String(kv[i].getFamily()) + ":");
-					System.out.print(new String(kv[i].getQualifier()) + "");
+					System.out.print(new String(kv[i].getFamily()) + " ");
+					System.out.print( Bytes.toLong( kv[i].getQualifier()) + " ");
 					System.out.print(kv[i].getTimestamp() + " ");
-					System.out.println(new String(kv[i].getValue()));
+					System.out.println(new String( kv[i].getValue()));
 				}
 			}
 		} catch (IOException e) {

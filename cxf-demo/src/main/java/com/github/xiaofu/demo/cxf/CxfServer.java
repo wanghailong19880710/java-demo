@@ -3,9 +3,12 @@
  */
 package com.github.xiaofu.demo.cxf;
 
+import org.apache.cxf.endpoint.Server;
+import org.apache.cxf.interceptor.Interceptor;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.apache.cxf.jaxws.JaxWsServerFactoryBean;
+import org.apache.cxf.message.Message;
 
 /**
  * @author xiaofu
@@ -34,7 +37,7 @@ public class CxfServer {
 		  svrFactory.getOutInterceptors().add(new LoggingOutInterceptor());
 		  svrFactory.create();
 		 
+		 
 		
 	}
-
 }
