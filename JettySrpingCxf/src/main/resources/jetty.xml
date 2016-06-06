@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_7_6.dtd">
+<Configure id="webServer" class="org.eclipse.jetty.server.Server">
+
+	<Call name="addConnector">
+		<Arg>
+			<New class="org.eclipse.jetty.server.nio.SelectChannelConnector">
+				<Set name="port">8080</Set>
+			</New>
+		</Arg>
+	</Call>
+	<New id="servletContextHandler" class="org.eclipse.jetty.servlet.ServletContextHandler">
+		<Set name="contextPath">/</Set>
+		<Call name="addEventListener">
+			<Arg>
+				<New class="org.springframework.web.context.ContextLoaderListener"></New>
+			</Arg>
+		</Call>
+		<Call name="setInitParameter">
+			<Arg>contextConfigLocation</Arg>
+			<Arg>classpath*:cxf-beans.xml</Arg>
+		</Call>
+		<Call name="addServlet">
+			<Arg>
+				<New class="org.eclipse.jetty.servlet.ServletHolder">
+					<Arg>
+						<New class="org.apache.cxf.transport.servlet.CXFServlet"></New>
+					</Arg>
+				</New>
+			</Arg>
+			<Arg>/Test/*</Arg>
+		</Call>
+	</New>
+	<Set name="handler">
+		<New class="org.eclipse.jetty.server.handler.HandlerCollection">
+			<Call name="addHandler">
+				<Arg>
+					<Ref id="servletContextHandler"></Ref>
+				</Arg>
+			</Call>
+		</New>
+	</Set>
+</Configure>
