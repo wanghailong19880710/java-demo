@@ -11,20 +11,11 @@
 	</Call>
 	<New id="servletContextHandler" class="org.eclipse.jetty.servlet.ServletContextHandler">
 		<Set name="contextPath">/</Set>
-		<Call name="addEventListener">
-			<Arg>
-				<New class="org.springframework.web.context.ContextLoaderListener"></New>
-			</Arg>
-		</Call>
-		<Call name="setInitParameter">
-			<Arg>contextConfigLocation</Arg>
-			<Arg>classpath*:cxf-beans.xml</Arg>
-		</Call>
 		<Call name="addServlet">
 			<Arg>
 				<New class="org.eclipse.jetty.servlet.ServletHolder">
 					<Arg>
-						<New class="org.apache.cxf.transport.servlet.CXFServlet"></New>
+						<New class="org.apache.cxf.transport.servlet.CXFNonSpringServlet"></New>
 					</Arg>
 				</New>
 			</Arg>
