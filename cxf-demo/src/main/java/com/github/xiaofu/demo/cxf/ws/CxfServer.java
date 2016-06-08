@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.github.xiaofu.demo.cxf;
+package com.github.xiaofu.demo.cxf.ws;
 
 import org.apache.cxf.endpoint.Server;
 import org.apache.cxf.interceptor.Interceptor;

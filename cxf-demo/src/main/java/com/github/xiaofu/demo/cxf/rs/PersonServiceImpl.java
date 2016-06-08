@@ -1,4 +1,4 @@
-package com.github.xiaofu.demo.cxf.rs.programmatically;
+package com.github.xiaofu.demo.cxf.rs;
 
 import java.util.ArrayList;
 import java.util.HashMap;

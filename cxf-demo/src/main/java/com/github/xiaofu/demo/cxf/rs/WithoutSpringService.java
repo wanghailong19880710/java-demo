@@ -1,4 +1,4 @@
-package com.github.xiaofu.demo.cxf.rs.programmatically;
+package com.github.xiaofu.demo.cxf.rs;
 
 import org.apache.cxf.binding.BindingFactoryManager;
 import org.apache.cxf.jaxrs.JAXRSBindingFactory;

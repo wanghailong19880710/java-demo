@@ -1,4 +1,4 @@
-package com.github.xiaofu.demo.cxf.rs.programmatically;
+package com.github.xiaofu.demo.cxf.rs;
 
 import java.io.Serializable;
 import java.util.List;

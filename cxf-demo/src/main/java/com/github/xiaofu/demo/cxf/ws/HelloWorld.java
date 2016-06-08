@@ -1,4 +1,4 @@
-package com.github.xiaofu.demo.cxf;
+package com.github.xiaofu.demo.cxf.ws;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
