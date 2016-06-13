@@ -19,7 +19,11 @@ public class Main {
 		Entity t=new Entity();
 		t.setT1("abc");
 		context.getBean(IService.class).test(t);
-		 
+	 
+		String[] aliases= context.getAliases("test2");
+		for (String string : aliases) {
+			System.out.println(string);//test1,test3
+		}
 	}
 
 }
