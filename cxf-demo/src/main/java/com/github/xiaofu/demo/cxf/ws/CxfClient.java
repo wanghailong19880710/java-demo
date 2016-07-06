@@ -39,9 +39,9 @@ public class CxfClient {
 		//DynamicClientFactory 
 		//JaxWsDynamicClientFactory
 		//会生成服务端的类
-	/*	JaxWsDynamicClientFactory clientFactory= JaxWsDynamicClientFactory.newInstance();
+		JaxWsDynamicClientFactory clientFactory= JaxWsDynamicClientFactory.newInstance();
 		Client client=clientFactory.createClient("http://localhost:9100/helloWorld?wsdl");
 		Object[] results= client.invoke("sayHi","hello");
-		System.out.println(results[0]);*/
+		System.out.println(results[0]);
 	}
 }
