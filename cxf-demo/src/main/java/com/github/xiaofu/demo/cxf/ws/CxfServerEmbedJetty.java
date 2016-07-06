@@ -95,8 +95,8 @@ public class CxfServerEmbedJetty {
 
 	}
 	public static void main(String[] args) throws Exception {
-		//CxfWithSpringCodeFirst();
-		CxfWithSpringConfiguration();
+		CxfWithSpringCodeFirst();
+		//CxfWithSpringConfiguration();
 		//CxfWithNonSpringConfiguration();
 	}
 }

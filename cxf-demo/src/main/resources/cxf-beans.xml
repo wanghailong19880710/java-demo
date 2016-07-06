@@ -7,9 +7,8 @@
 	<import resource="classpath:META-INF/cxf/cxf.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 	<jaxws:endpoint id="wsService" implementor="com.github.xiaofu.demo.cxf.ws.HelloWorldImpl"
-		endpointName="e:test" serviceName="s:test" address="/Test"
-		xmlns:e="http://service.jaxws.cxf.apache.org/endpoint" xmlns:s="http://service.jaxws.cxf.apache.org/service">
-
+		endpointName="e:HelloWorld" serviceName="e:HelloWorld" address="/HelloWorld"
+		xmlns:e="http://com.github.xiaofu.demo.cxf.ws/HelloWorld">
 		<jaxws:inInterceptors>
 			<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"></bean>
 		</jaxws:inInterceptors>

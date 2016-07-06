@@ -20,21 +20,16 @@ public class CxfServer {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		/*
-		 * System.out.println("Starting Server"); HelloWorldImpl implementor =
-		 * new HelloWorldImpl(); String address =
-		 * "http://localhost:9100/helloWorld"; Endpoint.publish(address,
-		 * implementor);
-		 */
+		 
 
-		
+		  //can use ServerFactoryBean
 		  HelloWorldImpl implementor = new HelloWorldImpl();
 		  JaxWsServerFactoryBean svrFactory = new JaxWsServerFactoryBean();
 		  svrFactory.setServiceClass(HelloWorld.class);
-		  svrFactory.setAddress("http://localhost:9000/helloWorld");
+		  svrFactory.setAddress("http://localhost:9100/helloWorld");
 		  svrFactory.setServiceBean(implementor);
-		  svrFactory.getInInterceptors().add(new LoggingInInterceptor());
-		  svrFactory.getOutInterceptors().add(new LoggingOutInterceptor());
+		/*  svrFactory.getInInterceptors().add(new LoggingInInterceptor());
+		  svrFactory.getOutInterceptors().add(new LoggingOutInterceptor());*/
 		  svrFactory.create();
 		 
 		 

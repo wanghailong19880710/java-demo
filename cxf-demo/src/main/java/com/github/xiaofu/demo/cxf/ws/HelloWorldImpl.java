@@ -11,4 +11,19 @@ public class HelloWorldImpl implements HelloWorld {
 		return "Hello " + text;
 	}
 
+	@Override
+	public int test(String a,int[] types,int b) {
+		 
+		return types.length;
+	}
+
+	@Override
+	public Results test2(String p1) {
+		Results results=new Results();
+		results.setStr(p1);
+		return results;
+	}
+	
+	
+
 }
