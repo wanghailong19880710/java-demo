@@ -7,10 +7,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
-import org.codehaus.jackson.annotate.JsonMethod;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+
 
 /**
  * @author fulaihua

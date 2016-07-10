@@ -14,11 +14,13 @@ import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.ObjectNode;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 
 public class Test {
 	public static void main(String[] args) throws JsonProcessingException, IOException {
@@ -102,8 +104,8 @@ public class Test {
 		for (JsonNode node : rootNode)
 		{
 				ObjectNode objNode=(ObjectNode)node;
-				System.out.println(objNode.get("key").getTextValue());
-				System.out.println(objNode.get("value").getTextValue());
+				System.out.println(objNode.get("key").asText());
+				System.out.println(objNode.get("value").asText());
 				
 		}
 	}
